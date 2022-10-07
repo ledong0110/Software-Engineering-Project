@@ -19,8 +19,8 @@ type Combination[T any] struct {
 
 // Some method may be missed, due to my laziness :))
 type Methods[T any] interface {
-	Find(interface{}) ([]T, error)
-	FindOne(interface{}) (T, error)
+	Find(interface{}, ...*options.FindOptions) ([]T, error)
+	FindOne(interface{}, ...*options.FindOneOptions) (T, error)
 	FindOneAndReplace() // Not yet
 	FindOneAndDelete()	// Not yet
 	FindOneAndUpdate()  // Not yet
@@ -37,14 +37,14 @@ type Methods[T any] interface {
 }
 
 
-func (comb Combination[T]) Find(filter interface{}) ([]T, error){
+func (comb Combination[T]) Find(filter interface{}, opts ...*options.FindOptions) ([]T, error){
 	var elementDetails []T
 	accessCollection := mongodb.Collection(comb.Collection)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	cursor, queryError := accessCollection.Find(ctx, filter)
+	cursor, queryError := accessCollection.Find(ctx, filter, opts...)
 	defer cancel()
 	if queryError != nil {
-		log.Fatal(queryError)
+		log.Println(queryError)
 		return elementDetails, queryError
 	}
 	for cursor.Next(context.TODO()) {
@@ -57,21 +57,21 @@ func (comb Combination[T]) Find(filter interface{}) ([]T, error){
 			copier.Copy(&eachElement, &referSchema)
 			elementDetails = append(elementDetails, eachElement)
 		} else {
-			log.Fatal(err)
+			log.Println(err)
 			return elementDetails, err
 		}
 	}
 	return elementDetails, nil
 }
 
-func (comb Combination[T]) FindOne(filter interface{}) (T, error) {
+func (comb Combination[T]) FindOne(filter interface{}, opts ...*options.FindOneOptions) (T, error) {
 	accessCollection := mongodb.Collection(comb.Collection)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	var element T
-	queryError := accessCollection.FindOne(ctx, filter).Decode(&element)
+	queryError := accessCollection.FindOne(ctx, filter, opts...).Decode(&element)
 	defer cancel()
 	if queryError != nil {
-		log.Fatal(queryError)
+		log.Println(queryError)
 		return element, queryError
 	}
 	return element, nil
@@ -83,7 +83,7 @@ func (comb Combination[T]) UpdateOne(filter interface{}, update interface{}) (*m
 	updateResult, err := accessCollection.UpdateOne(ctx, filter, update)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return updateResult, err
 }
@@ -94,7 +94,7 @@ func (comb Combination[T]) UpdateMany(filter interface{}, update interface{}) (*
 	updateResults, err := accessCollection.UpdateMany(ctx, filter, update)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return updateResults, err
 }
@@ -105,7 +105,7 @@ func (comb Combination[T]) InsertOne(data T) (*mongo.InsertOneResult, error) {
 	insertResult, err := accessCollection.InsertOne(ctx, data)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return insertResult, err
 }
@@ -116,7 +116,7 @@ func (comb Combination[T]) InsertMany(data []interface{}) (*mongo.InsertManyResu
 	insertResults, err := accessCollection.InsertMany(ctx, data)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return insertResults, err
 }
@@ -127,7 +127,7 @@ func (comb Combination[T]) DeleteOne(filter interface{}) (*mongo.DeleteResult, e
 	deleteResults, err := accessCollection.DeleteOne(ctx, filter)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return deleteResults, err
 }
@@ -138,7 +138,7 @@ func (comb Combination[T]) DeleteMany(filter interface{}) (*mongo.DeleteResult, 
 	deleteResults, err := accessCollection.DeleteMany(ctx, filter)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return deleteResults, err
 }
@@ -149,7 +149,7 @@ func (comb Combination[T]) ReplaceOne(filter interface{}, update interface{}) (*
 	replaceResult, err := accessCollection.ReplaceOne(ctx, filter, update)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return replaceResult, err
 }
@@ -160,7 +160,7 @@ func (comb Combination[T]) Drop() error {
 	err := accessCollection.Drop(ctx)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return err
 }
@@ -171,7 +171,7 @@ func (comb Combination[T]) Count(filter interface{}) (int64, error) {
 	count, err := accessCollection.CountDocuments(ctx, filter)
 	defer cancel()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return count, err
 }

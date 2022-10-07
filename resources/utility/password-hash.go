@@ -17,10 +17,10 @@ func CreatePassword(passwordString string) (string, error) {
 }
 
 // ComparePasswords will create password using bcrypt
-func ComparePasswords(password string, hashedPassword string) error {
+func ComparePasswords(password string, hashedPassword string) bool {
     err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
     if err != nil {
-        return errors.New("The '" + password + "' and '" + hashedPassword + "' strings don't match")
+        return false
     }
-    return nil
+    return true
 }
