@@ -1,29 +1,33 @@
 package controllers
 
 import (
-	_ "chat_module/config/db"
-
 	"github.com/gofiber/fiber/v2"
+
+	store "chat_module/config/session"
 )
 
-//var user = db.MongoDB.Collection("user")
+
 
 type OfficerController struct { 
 	Home func(*fiber.Ctx) error
-	Blog func(*fiber.Ctx) error
-	UserSave func(*fiber.Ctx) error
-	UserList func(*fiber.Ctx) error
+	ChatInterface func(*fiber.Ctx) error
 }
 
 func InitializeOfficerController() OfficerController {
 	var officerController = OfficerController{}
 
 	officerController.Home = func(c *fiber.Ctx) error {
-        return c.Render("backofficer/site", fiber.Map{})
+		sess, _ := store.Store.Get(c)
+
+        return c.Render("backofficer/site", fiber.Map{
+			"user_name": sess.Get("user_name"),
+			"picture" : sess.Get("picture"),
+		})
 	}
 
-	// officerController.UserList = func (c *fiber.Ctx) error {
-	// 	result, err := user.InsertOne()
-	// }
+	officerController.ChatInterface = func(c *fiber.Ctx) error {
+		return c.Render("messenger/chat", fiber.Map{})
+	}
+
 	return officerController
 }

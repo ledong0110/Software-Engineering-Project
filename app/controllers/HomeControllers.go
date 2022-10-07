@@ -21,33 +21,22 @@ import (
 
 var User = model.User
 
-type HomeController struct { 
+type HomeController struct {
 	Home func(*fiber.Ctx) error
-	Blog func(*fiber.Ctx) error
 	InsertPage func(*fiber.Ctx) error
 	Insert func(*fiber.Ctx) error
 	UserList func(*fiber.Ctx) error
 	ShowLogin func(*fiber.Ctx) error
 	Login func(*fiber.Ctx) error
 	Logout func(*fiber.Ctx) error
+	EmptyPage func(*fiber.Ctx) error
 }
 
 func InitializeHomeController() HomeController {
 	var homeController = HomeController{}
 
-	homeController.Home = func(c *fiber.Ctx) error {
-		sess, err := store.Store.Get(c)
-		if err != nil {
-			log.Println(err)
-			return err
-		}
-        return c.Render("home", fiber.Map{"user_name": sess.Get("user_name"), 
-										  "picture": sess.Get("picture"),
-										})
-	}
-
-	homeController.Blog = func (c *fiber.Ctx) error {
-		return c.SendString("Day la blog")
+	homeController.Home = func (c *fiber.Ctx) error {
+		return c.Redirect("/login")
 	}
 
 	homeController.InsertPage = func (c *fiber.Ctx) error {
@@ -129,6 +118,10 @@ func InitializeHomeController() HomeController {
 
 	}
 	
+	homeController.EmptyPage = func (c *fiber.Ctx) error {
+		c.Status(404)
+		return c.Render("alert", fiber.Map{"content":"We cannot find your page :("})
+	}
 
 	return homeController
 }

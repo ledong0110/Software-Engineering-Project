@@ -9,4 +9,5 @@ var employeeController controllers.EmployeeController= controllers.InitializeEmp
 
 func EmployeeRouter(employee fiber.Router) {
 	employee.Get("/", employeeController.Home)
+	employee.Get("/chat-app", employeeController.ChatInterface)
 }
