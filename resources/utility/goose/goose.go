@@ -202,6 +202,6 @@ func Connect(uri, dbName string) {
 // New
 
 func New[T any](collection string) Combination[T] {
-	model := Combination[T]{Collection: "user"}
+	model := Combination[T]{Collection: collection}
 	return model
 }

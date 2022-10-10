@@ -4,8 +4,10 @@ go 1.19
 
 require (
 	github.com/gofiber/fiber/v2 v2.38.1
+	github.com/gofiber/storage/mongodb v0.0.0-20221005114327-4e6f1c95ff26
 	github.com/gofiber/template v1.7.1
-	github.com/google/uuid v1.1.2
+	github.com/gofiber/websocket/v2 v2.1.0
+	github.com/google/uuid v1.3.0
 	github.com/gorilla/handlers v1.4.2
 	github.com/gorilla/mux v1.7.4
 	github.com/gorilla/websocket v1.4.2
@@ -19,12 +21,12 @@ require (
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/aymerick/raymond v2.0.2+incompatible // indirect
+	github.com/fasthttp/websocket v1.5.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/githubnemo/CompileDaemon v1.4.0 // indirect
 	github.com/go-bongo/bongo v0.10.4 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
-	github.com/gofiber/storage/mongodb v0.0.0-20221005114327-4e6f1c95ff26 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/klauspost/compress v1.15.0 // indirect
@@ -35,6 +37,7 @@ require (
 	github.com/oleiade/reflections v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/radovskyb/watcher v1.0.7 // indirect
+	github.com/savsgio/gotils v0.0.0-20211223103454-d0aaa54c5899 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.40.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect

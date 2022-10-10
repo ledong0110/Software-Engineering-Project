@@ -13,6 +13,7 @@ type UserFormat struct {
 	Username	string				`bson:"username,omitempty"`
 	Password	string				`bson:"password,omitempty"`
 	Role		int32				`bson:"role,omitempty"`
+	Online 		string				`bson:"online,omitempty"`
 }
 
 var User = goose.New[UserFormat]("user")

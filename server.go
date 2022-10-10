@@ -9,7 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/template/handlebars"
-	_ "github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 
 	db "chat_module/config/db"
@@ -19,6 +18,8 @@ import (
 )
 
 func main() {
+    // Run chat room
+    
     // Load env variables
     godotenv.Load()
     // Connect database
@@ -38,7 +39,7 @@ func main() {
 	})
     app.Use(cors.New())
     app.Static("/", "./public")
-
+    
     routes.Route(app)
     
     log.Fatal(app.Listen(":"+os.Getenv("PORT")))

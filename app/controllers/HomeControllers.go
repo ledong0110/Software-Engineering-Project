@@ -49,6 +49,7 @@ func InitializeHomeController() HomeController {
 			return err
 		}
 		payload.Password, _ = utils.CreatePassword(payload.Password)
+		payload.Online = "N"
 		_, err := User.InsertOne(payload)
 		if err != nil {
 			log.Println(err)
