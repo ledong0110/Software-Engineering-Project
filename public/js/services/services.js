@@ -1,5 +1,5 @@
 
-const CHAT_SERVER_ENDPOINT = "127.0.0.1:8000";
+const CHAT_SERVER_ENDPOINT = window.location.host;
 let webSocketConnection = null;
 var selectedUser = ""
 
