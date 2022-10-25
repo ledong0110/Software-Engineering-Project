@@ -43,7 +43,7 @@ func handleSocketPayloadEvents(client *Client, socketEventPayload SocketEventStr
 	switch socketEventPayload.EventName {
 
 	case "join":
-		userID := (socketEventPayload.EventPayload).(string)
+		userID := client.userID
 		docID, _ := primitive.ObjectIDFromHex(userID)
 		opts := options.FindOne().SetProjection(bson.M{
 			"username": 1,
@@ -87,9 +87,10 @@ func handleSocketPayloadEvents(client *Client, socketEventPayload SocketEventStr
 		}
 	case "disconnect":
 		if socketEventPayload.EventPayload != nil {
-			userID := (socketEventPayload.EventPayload).(string)
+			userID := client.userID
 			docID, _ := primitive.ObjectIDFromHex(userID)
 			opts := options.FindOne().SetProjection(bson.M{
+				"_id": 1,
 				"username": 1,
 				"online": 1,
 			})
@@ -168,7 +169,7 @@ func (c *Client) readPump() {
 	defer unRegisterAndCloseConnection(c)
 	
 	// Register the client
-	
+	setSocketPayloadReadConfig(c)
 	
 
 	for {
@@ -187,6 +188,8 @@ func (c *Client) readPump() {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				log.Printf("error ===: %v", err)
 			}
+			socketEventPayload.EventName = "disconnect"
+			handleSocketPayloadEvents(c, socketEventPayload)
 			break
 		}
 		// log.Println(string(payload))
@@ -217,7 +220,7 @@ func (c *Client) writePump() {
 			json.NewEncoder(reqBodyBytes).Encode(payload)
 			finalPayload := reqBodyBytes.Bytes()
 			if !ok {
-				// 	c.webSocketConnection.WriteMessage(websocket.CloseMessage, []byte{})
+					// c.webSocketConnection.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
 			

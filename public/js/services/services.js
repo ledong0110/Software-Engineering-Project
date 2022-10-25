@@ -33,6 +33,21 @@ const chatListSubscription = (socketPayload) => {
 
     // slice is used to create aa new instance of an array
     chatList = newChatList.slice();
+
+    var onlineUsers = document.querySelectorAll('.parent-user')
+    for (let i = 0; i < onlineUsers.length; i++)
+    {
+        var user = onlineUsers[i].querySelector('.child')
+        var idOnlineUser = onlineUsers[i].getAttribute('data-id')
+        if (chatList.filter(e => e.ID === idOnlineUser).length > 0){
+            user.classList.remove("bg-danger")
+            user.classList.add("bg-success")
+        }
+        else {
+            user.classList.remove("bg-success")
+            user.classList.add("bg-danger")
+        }
+    }
 };
 
 
@@ -161,7 +176,13 @@ function connectToWebSocket(userID) {
         }
     }
     if (window["WebSocket"]) {
-        webSocketConnection = new WebSocket("ws://" + CHAT_SERVER_ENDPOINT + "/chat-app/ws/register");
+        if (window.location.protocol === 'https:'){
+
+            webSocketConnection = new WebSocket("wss://" + CHAT_SERVER_ENDPOINT + "/chat-app/ws/register");
+        }
+        else {
+            webSocketConnection = new WebSocket("ws://" + CHAT_SERVER_ENDPOINT + "/chat-app/ws/register");
+        }
         return {
             message: "You are connected to Chat Server",
             webSocketConnection
@@ -214,12 +235,13 @@ function listenToWebSocketEvents() {
                     if (!socketPayload.eventPayload) {
                         return
                     }
+                    chatListSubscription(socketPayload.eventPayload)
+                    break;
                     // eventEmitter.emit(
                     //   'chatlist-response',
                     //   socketPayload.eventPayload
                     // );
 
-                    break;
 
                 case 'message-response':
 
@@ -239,3 +261,10 @@ function listenToWebSocketEvents() {
     };
 }
 
+
+function emitLogoutEvent() {
+    if (webSocketConnection === null) {
+        return;
+    }
+    webSocketConnection.close();
+}
