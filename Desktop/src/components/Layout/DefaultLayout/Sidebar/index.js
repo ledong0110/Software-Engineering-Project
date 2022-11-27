@@ -11,7 +11,29 @@ function Sidebar() {
         setClicked(route)
         navigate('/' + route)
     }
-     
+    function logout() {
+
+       
+        fetch('http://127.0.0.1:8000/logout', {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        body: JSON.stringify({"token": localStorage.getItem("token")}),
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        })
+        .then((response) => response.json())
+        .then((res) => {
+            
+            localStorage.clear()
+            window.location.reload(false)
+        })
+    
+        
+    } 
+
     return (
         <aside className={clsx(styles.wrapper)}>
             <div className={clsx(styles.inner)}>
@@ -51,7 +73,9 @@ function Sidebar() {
                 >
                     Chat
                 </div>
+    
             </div>
+            <button onClick={() => logout()}>Log out</button>
         </aside>
     )
 }

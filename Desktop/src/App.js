@@ -2,9 +2,10 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {publicRoutes} from './routes/index'
 import DefaultLayout from './components/Layout/DefaultLayout';
 import { Fragment } from 'react';
+import { IsAuthenticated } from './middlewares/IsAuthenticated';
 
 function App() {
-  
+
   return (
     <Router>
       <div>
@@ -21,11 +22,13 @@ function App() {
                 key={index}
                 path={route.path}
                 element={
+                  <IsAuthenticated required={route.private}>
                     <Layout>
                       <Page/>
                     </Layout>
-                
+                  </IsAuthenticated>
                   }
+                onEnter={route.onEnter}
               />
             )
           })}
