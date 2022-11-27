@@ -1,0 +1,23 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: white;
+    }
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.name {
+    margin-left: 12px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}

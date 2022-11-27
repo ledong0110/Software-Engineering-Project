@@ -1,0 +1,21 @@
+.wrapper {
+    width: 18%;
+    height: 944px;
+    background-color: black;
+    color: white;
+    border: white;
+}
+
+.inner {
+    margin-top: calc(0.14 * 944px);
+}
+
+.page {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    padding: 10px 20px;
+
+    cursor: pointer;
+}

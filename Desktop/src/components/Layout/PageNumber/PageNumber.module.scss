@@ -1,0 +1,17 @@
+.wrapper {
+    height: calc(0.14*944px);
+    display: flex;
+    align-items: center;
+    padding-left: 65vw;
+}
+
+.firstMount {
+    background: rgba(0, 204, 144, 0.8);
+}
+
+.page {
+    background: #C4C5D0;
+    border: none;
+    margin: 0 0.2rem;
+    cursor: pointer;
+}

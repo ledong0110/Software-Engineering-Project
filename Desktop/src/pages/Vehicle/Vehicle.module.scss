@@ -1,0 +1,56 @@
+.boardTitle,
+.boardContent {
+    width: 92.7%;
+    margin: 0 80px 0 20px;
+}
+
+.boardTitle {
+    height: calc(0.07*944px);
+    background-color: #D9D9D9;
+    display: flex;
+    align-items: center;
+    margin-top: calc(0.05*944px);
+}
+
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boardRow {
+    height: calc(0.06*944px);
+}
+
+.checkBox {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    position: relative;
+    right: 15%;
+}
+
+.content1 {
+    width: 11.8%;
+}
+
+.content2 {
+    width: 17.3%;
+}
+
+.content3 {
+    width: 31%;
+}
+
+.content4 {
+    width: 13%;
+}
+
+.content5 {
+    width: 15.1%;
+}
+
+.content6 {
+    width: 11.8%;
+}
