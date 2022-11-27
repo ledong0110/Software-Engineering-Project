@@ -74,10 +74,14 @@ func InitializeHomeController() HomeController {
 			Username  string `json:"username"`
 			Password string  `json:"password"`
 		}{}
-	
+		msg := struct {
+			Message string `json:"msg"`
+			Token string `json:"token"`
+		}{}
 		if err := c.BodyParser(&payload); err != nil {
 			return err
 		}
+		log.Println(payload)
 		// log.Println(string(acc))
 		// opts := options.FindOne().SetProjection(bson.M{
 		// 	"username": 1,
@@ -86,13 +90,15 @@ func InitializeHomeController() HomeController {
 		userDetail, err := User.FindOne(bson.M{"username": payload.Username})
 		if err != nil {
 			log.Println(err)
-			return c.SendString("This user does not exist in our system :(")
+			return c.JSON(msg)
 		}
 		if utils.ComparePasswords(payload.Password, userDetail.Password){
 			log.Println("Successfully authentication")
 		} else {
 			log.Println("Wrong Password")
-			return c.SendString("Oops ! Wrong password, Try again :D ?")
+			msg.Message = "failed"
+			msg.Token = ""
+			return c.JSON(msg)
 		}
 		sess, err := store.Store.Get(c)
 		if err != nil {
@@ -103,12 +109,18 @@ func InitializeHomeController() HomeController {
 		sess.Set("user_name", userDetail.Name)
 		sess.Set("picture", userDetail.Picture)
 		sess.Set("role", userDetail.Role)
-		sess.Save()
-		return c.Redirect("/")
+		defer sess.Save()
+		msg.Message = "done"
+		msg.Token = sess.ID()
+		
+		return c.JSON(msg)
 	}
 
 	homeController.Logout = func (c *fiber.Ctx) error {
 		sess, err := store.Store.Get(c)
+		msg := struct {
+			Message string `json:"msg"`
+		}{}
 		if err != nil {
 			log.Println(err)
 			return err
@@ -116,7 +128,8 @@ func InitializeHomeController() HomeController {
 		if err := sess.Destroy(); err != nil {
             panic(err)
         }
-		return c.Redirect("/")
+		msg.Message = "done"
+		return c.JSON(msg)
 
 	}
 	

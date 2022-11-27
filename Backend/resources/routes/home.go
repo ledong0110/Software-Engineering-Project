@@ -12,7 +12,7 @@ func HomeRouter(home fiber.Router) {
 	home.Get("/users", homeController.UserList)
 	home.Get("/users/insert", homeController.InsertPage)
 	home.Post("/users/insert", homeController.Insert)
-	home.Get("/logout",  homeController.Logout)
+	home.Post("/logout",  middleware.IsAuthenticated, homeController.Logout)
 	home.Get("/login", middleware.SwithcRoute, homeController.ShowLogin)
 	home.Post("/login", homeController.Login)
 	home.Get("/map", homeController.Map)
