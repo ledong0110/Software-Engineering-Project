@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	_ "log"
+	_"log"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
@@ -13,10 +13,24 @@ import (
 
 var User = model.User
 
+type token struct {
+	Token string `json:"token"`
+}
+
 func IsAuthenticated(c* fiber.Ctx) error {
+	tok := token{}
+	msg := struct {
+		Message string `json:"msg"`
+	}{}
+	if err := c.BodyParser(&tok); err != nil {
+		msg.Message = "failed"
+		return c.JSON(msg)
+	}
+	
 	sess, _ := store.Store.Get(c)
-	if (sess.Get("id") == nil) {
-		return c.Redirect("/login")
+	if (sess.Get("id") != tok.Token) {
+		msg.Message = "failed"
+		return c.JSON(msg)
 	}
 	id := sess.Get("id")
 	docId, _ := primitive.ObjectIDFromHex(id.(string))
