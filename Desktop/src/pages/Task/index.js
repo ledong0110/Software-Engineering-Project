@@ -98,7 +98,7 @@ function Task(/*{allPosts}*/) {
     const [posts] = useState(allPosts)
     const [currentPage, setCurrentPage] = useState(1)
     const [postsPerPage] = useState(10)
-    //const [display, setDisplay] = useState('none')
+    const [modal, setModal] = useState('none')
 
     const indexOfLastPost = currentPage * postsPerPage
     const indexOfFirstPost = indexOfLastPost - postsPerPage
@@ -107,10 +107,22 @@ function Task(/*{allPosts}*/) {
     const paginate = pageNumber  => setCurrentPage(pageNumber)
 
     return (
-        <div className={clsx(styles.wrapper)}>
-            <div className={clsx(styles.modal)}>
-                <div className={clsx(styles.modalHeader)}>
-                    <div className={clsx(styles.modalName)}>Tạo nhiệm vụ mới</div>
+        <div className={clsx(styles.wrapper)} style={{background: (modal==='block') && 'rgba(0,0,0,0.4)'}}>
+            <div className={clsx(styles.modal)} style={{display: modal}}>
+                <div className={clsx(styles.modalName)}>Tạo nhiệm vụ mới</div>
+                <div className={clsx(styles.modalContent)}>
+                    <div className={clsx(styles.modalEle)}>Tiêu đề<input type='text'/></div>
+                    <div className={clsx(styles.modalEle)}>Thời gian<input type='datatimeLocal'/></div>
+                    <div className={clsx(styles.modalEle)}>Giao<input type='text'/></div>
+                    <div className={clsx(styles.flexCenter)} style={{justifyContent: 'space-between'}}>
+                        <div className={clsx(styles.modalEle)} style={{width: '100%', backgroundColor: 'white'}}>MCPs<input type='button'/></div>
+                        <div className={clsx(styles.modalEle)} style={{width: '100%'}}>Phương tiện<input type='button'/></div>
+                    </div>
+                    <div className={clsx(styles.modalEle)}>Mô tả (không bắt buộc)<input type='text'  style={{height: '4rem'}}/></div>
+                    <div className={clsx(styles.modalButton)}>
+                        <button onClick={() => setModal('none')}>Đóng</button>
+                        <button>Tạo</button>
+                    </div>
                 </div>
             </div>
             <PageTitle name='Task'/>
@@ -120,7 +132,12 @@ function Task(/*{allPosts}*/) {
                     <button className={clsx(styles.button)}>Edit</button>
                     <button className={clsx(styles.button)}>Delete</button>
                     <input className={clsx(styles.search)} placeholder='Search Tasks' spellCheck={false}/>
-                    <button className={clsx(styles.add)}>+Add new</button>
+                    <button 
+                        className={clsx(styles.add)}
+                        onClick={() => setModal('block')}
+                    >
+                        +Add new
+                    </button>
                 </div>
             </div>
             <div className={clsx(styles.boardTitle)}>
