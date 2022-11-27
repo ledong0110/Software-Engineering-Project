@@ -9,9 +9,9 @@ var officerController controllers.OfficerController= controllers.InitializeOffic
 
 func BackofficerRouter(backofficer fiber.Router) {
 	backofficer.Get("/chat-app", officerController.ChatInterface)
-	backofficer.Get("/task-management")
-	backofficer.Get("/task-management/assign")
-	backofficer.Get("/mcps")
-	backofficer.Get("/vehicles")
+	// backofficer.Get("/task-management")
+	// backofficer.Get("/task-management/assign")
+	// backofficer.Get("/mcps")
+	// backofficer.Get("/vehicles")
 	backofficer.Get("/", officerController.Home)
 }

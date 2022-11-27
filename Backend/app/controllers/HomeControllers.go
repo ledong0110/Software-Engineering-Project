@@ -29,6 +29,7 @@ type HomeController struct {
 	ShowLogin func(*fiber.Ctx) error
 	Login func(*fiber.Ctx) error
 	Logout func(*fiber.Ctx) error
+	Map func(*fiber.Ctx) error
 	EmptyPage func(*fiber.Ctx) error
 }
 
@@ -119,6 +120,9 @@ func InitializeHomeController() HomeController {
 
 	}
 	
+	homeController.Map = func(c *fiber.Ctx) error {
+		return c.Render("map", fiber.Map{})
+	}
 	homeController.EmptyPage = func (c *fiber.Ctx) error {
 		c.Status(404)
 		return c.Render("alert", fiber.Map{"content":"We cannot find your page :("})

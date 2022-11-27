@@ -13,8 +13,13 @@ func Route(app *fiber.App) {
 
 	backofficer := app.Group("/backofficer", middleware.IsBackOfficer)
 	BackofficerRouter(backofficer)
+
 	employee := app.Group("/employee", middleware.IsEmployee)
 	EmployeeRouter(employee)
+
+	task := app.Group("/task", middleware.IsAuthenticated)
+	TaskRouter(task)
+
 	home := app.Group("/")
 	HomeRouter(home)
 }
