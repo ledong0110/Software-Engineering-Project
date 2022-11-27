@@ -5,6 +5,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import PageTitle from "../../components/Layout/PageTitle";
 import PageNumber from "../../components/Layout/PageNumber";
 import styles from './Task.module.scss'
+import AddModal from "../../components/Modal/Add/Add";
 
 const allPosts = [
     {
@@ -108,23 +109,7 @@ function Task(/*{allPosts}*/) {
 
     return (
         <div className={clsx(styles.wrapper)} style={{background: (modal==='block') && 'rgba(0,0,0,0.4)'}}>
-            <div className={clsx(styles.modal)} style={{display: modal}}>
-                <div className={clsx(styles.modalName)}>Tạo nhiệm vụ mới</div>
-                <div className={clsx(styles.modalContent)}>
-                    <div className={clsx(styles.modalEle)}>Tiêu đề<input type='text'/></div>
-                    <div className={clsx(styles.modalEle)}>Thời gian<input type='datatimeLocal'/></div>
-                    <div className={clsx(styles.modalEle)}>Giao<input type='text'/></div>
-                    <div className={clsx(styles.flexCenter)} style={{justifyContent: 'space-between'}}>
-                        <div className={clsx(styles.modalEle)} style={{width: '100%', backgroundColor: 'white'}}>MCPs<input type='button'/></div>
-                        <div className={clsx(styles.modalEle)} style={{width: '100%'}}>Phương tiện<input type='button'/></div>
-                    </div>
-                    <div className={clsx(styles.modalEle)}>Mô tả (không bắt buộc)<input type='text'  style={{height: '4rem'}}/></div>
-                    <div className={clsx(styles.modalButton)}>
-                        <button onClick={() => setModal('none')}>Đóng</button>
-                        <button>Tạo</button>
-                    </div>
-                </div>
-            </div>
+            <AddModal modal={modal} setModal={setModal} />
             <PageTitle name='Task'/>
             <div className={clsx(styles.buttons)}>
                 <div className={clsx(styles.container)}>
