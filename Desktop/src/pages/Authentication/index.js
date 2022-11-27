@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './Authentication.css';
 
@@ -7,20 +7,20 @@ import Registration from './registration/registration'
 
 function Authentication() {
 
-  const [activeTab, setTabType] = useState('login');
-  const [loaderStatus, setLoaderStatus] = useState(false);
+  //const [activeTab, setTabType] = useState('login');
+  //const [loaderStatus, setLoaderStatus] = useState(false);
 
-  const changeTabType = (type) => {
-    setTabType(type);
-  }
+  // const changeTabType = (type) => {
+  //   setTabType(type);
+  // }
 
-  const getActiveClass = (type) => {
-    return type === activeTab ? 'active' : '';
-  };
+  // const getActiveClass = (type) => {
+  //   return type === activeTab ? 'active' : '';
+  // };
 
-  const displayPageLoader = (shouldDisplay) => {
-    setLoaderStatus(shouldDisplay)
-  }
+  // const displayPageLoader = (shouldDisplay) => {
+  //   setLoaderStatus(shouldDisplay)
+  // }
 
   return (
     <>
