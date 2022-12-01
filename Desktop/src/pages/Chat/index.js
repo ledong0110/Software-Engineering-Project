@@ -1,118 +1,146 @@
-import React, {useState, useEffect} from 'react';
-import withRouter from '../../services/withRouter';
+import clsx from 'clsx'
+import {useState} from 'react'
+import Message from '../../components/Message';
+import MessageSidebar from '../../components/MessageSidebar';
+import styles from './Chat.module.scss'
+// import { useTheme } from '@mui/material/styles';
+// import Box from '@mui/material/Box';
+// import OutlinedInput from '@mui/material/OutlinedInput';
+// import InputLabel from '@mui/material/InputLabel';
+// import MenuItem from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+// import Select from '@mui/material/Select';
+// import Chip from '@mui/material/Chip';
 
-import { userSessionCheckHTTPRequest } from "./../../services/api-service";
-import {
-  connectToWebSocket,
-  listenToWebSocketEvents,
-  emitLogoutEvent,
-} from './../../services/socket-service';
-import {
-  getItemInLS,
-  removeItemInLS
-} from "./../../services/storage-service";
+// const selected = ['abc','abc','abc','abc','abc','abc']
+// const personName = ['abc','abc','abc','abc','abc','abc']
 
-import ChatList from './ChatList/index';
-import Conversation from './Conversation/index';
+const previews = [
+    {
+        img: "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        name: "Janitor",
+        time: "11:15",
+        preview: "Hi there, how are youo"
+    },
+    {
+        img: "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        name: "Janitor",
+        time: "11:15",
+        preview: "Hi there, how are youo"
+    },
+    {
+        img: "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        name: "Janitor",
+        time: "11:15",
+        preview: "Hi there, how are youo"
+    },
+    {
+      img: "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      name: "Janitor",
+      time: "11:15",
+      preview: "Hi there, how are youo"
+    },
+    {
+        img: "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        name: "Janitor",
+        time: "11:15",
+        preview: "Hi there, how are youo"
+    },
+    {
+        img: "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        name: "Janitor",
+        time: "11:15",
+        preview: "Hi there, how are youo"
+    },
+]
 
-import './Chat.css';
+const messages = [
+  {
+    text: 'Hello how are you',
+    img: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+  },
+  {
+    text: 'Hello how are you',
+    img: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+  },
+  {
+    text: 'Hello how are you',
+    img: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+  },
+  {
+    text: 'Hello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are youHello how are you',
+    img: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+  },
+  {
+    text: 'Hello how are you',
+    img: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+  },
+]
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
 
-const useFetch = (props) => {
+// function getStyles(name, personName, theme) {
+//   return {
+//     fontWeight:
+//       personName.indexOf(name) === -1
+//         ? theme.typography.fontWeightRegular
+//         : theme.typography.fontWeightMedium,
+//   };
+// }
+function Chat() {
+  const [newMessage, setNewMessage] = useState('')
   
-  const [internalError, setInternalError] = useState(null);
-  const userDetails = getItemInLS('userDetails');
-      
-  useEffect(() => {
+// const handleChange = () => {}
 
-    (async () => {
-      if (userDetails === null || userDetails === '') {
-        props.history.push(`/`);
-      } else {
-        const isUserLoggedInResponse = await userSessionCheckHTTPRequest(
-          userDetails.userID
-        );
-        if (!isUserLoggedInResponse.response) {
-          props.history.push(`/`);
-        } else {
-          const webSocketConnection = connectToWebSocket(userDetails.userID);
-          if (webSocketConnection.webSocketConnection === null) {
-            setInternalError(webSocketConnection.message);
-          } else {
-            listenToWebSocketEvents()
-          }
-        }
-      }
-    })();
+    return (
+        <div className={clsx(styles.wrapper)}>
+          <MessageSidebar previews={previews}/>
+          <div className={clsx(styles.container)}>
+            {messages.map((message, index) => {
+              return (
+                <Message key={index} message={message} own={index%2===0}/>
+              )
+            })}
+            <div className={clsx(styles.chat)}>
+              <textarea 
+                  className={clsx(styles.messageInput)}
+                  placeholder=''
+                  onChange={e => setNewMessage(e.target.value)}
+                  value={newMessage}
+              ></textarea>
+              <button className={clsx(styles.submit)}>Send</button>
+            </div>
+            {/* <FormControl sx={{ m: 1, width: 300 }}>
 
-  }, [props, userDetails]);
-  return [userDetails, internalError];
-};
-
-const getUserNameInitial = (userDetails) => {
-  if(userDetails && userDetails.username) {
-    return userDetails.username[0]
-  }
-  return '_';
+            <Select
+          labelId="demo-multiple-chip-label"
+          id="demo-multiple-chip"
+          multiple
+          value={personName}
+          onChange={handleChange}
+          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((value, index) => (
+                <Chip key={index} label={value} />
+              ))}
+            </Box>
+          )}
+          MenuProps={MenuProps}
+        >
+          </Select>
+          </FormControl> */}
+          </div>
+        </div>
+    )
 }
 
-
-const getUserName = (userDetails) => {
-  if (userDetails && userDetails.username) {
-    return userDetails.username;
-  }
-  return '___';
-};
-
-const logoutUser = (props, userDetails) => {
-  if (userDetails.userID) {
-    removeItemInLS('userDetails');
-    emitLogoutEvent(userDetails.userID);
-    props.history.push(`/`);
-  }
-};
-
-
-
-function Chat(props) {
-  const [userDetails, internalError] = useFetch(props);
-  const [selectedUser, updateSelectedUser] = useState(null);
-
-  if (internalError !== null) {
-    return <h1>{internalError}</h1>;
-  }
-
-  return (
-    <div className='app__home-container'>
-      <header className='app__header-container'>
-        <nav className='app__header-user'>
-          <div className='username-initial'>
-            {getUserNameInitial(userDetails)}
-          </div>
-          <div className='user-details'>
-            <h4>{getUserName(userDetails)}</h4>
-          </div>
-        </nav>
-        <button className='logout' href='#' onClick={ () => {
-          logoutUser(props, userDetails);
-        }} >
-          Logout
-        </button>
-      </header>
-      <div className='app__content-container'>
-        <div className='app__home-chatlist'>
-          <ChatList
-            updateSelectedUser={(user) => {
-              updateSelectedUser(user);
-            }}
-            userDetails={userDetails}
-          />
-        </div>
-        <div className='app__home-message'>
-          <Conversation userDetails={userDetails} selectedUser={selectedUser} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default withRouter(Chat);
+export default Chat;

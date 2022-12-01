@@ -1,0 +1,80 @@
+.sidebar {
+    width: 36%;
+    height: 944px;
+
+    border: 1px solid #000000;
+    overflow-y: scroll;
+
+    input {
+        width: 220px;
+        height: 40px;   
+        margin: 0 0 0.5rem 0.6rem;
+    }
+}
+
+.name {
+    font-family: 'ABeeZee';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 45px;
+    line-height: 57px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 0.2rem 0 0.2rem 0.6rem;
+}
+
+.receiver {
+    height: 18%;
+
+    border: 1px solid #000000;
+    padding-top: 1rem;
+}
+
+.container {    
+    display: flex;
+    align-items: center;
+    height: 35%;
+    padding-left: 0.6rem;
+}
+
+.picture {
+    width: 30%;
+    border-radius: 50%;
+}
+
+.msgName,
+.time {
+    padding-left: 0.5rem;
+}
+
+.msgName {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 24px;
+}
+
+.time {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 18px;
+}
+
+.preview {
+    height: calc(0.18*994px*0.64 - 1rem);
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,35 @@
+
+.title {
+    border-bottom: 1px solid black;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.flexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkBox {
+    position: absolute;
+    left: -2rem;
+}
+
+.modalButton {
+    display: flex;
+    flex-direction: row-reverse;
+
+    margin: 20px 10% 0 0;
+
+    button {
+        Width: 90px;
+        Height: 35px;
+
+        background: rgba(0, 204, 144, 0.8);
+        border-radius: 8px;
+        margin: 0 0.5rem;
+        border: none;
+    }
+}

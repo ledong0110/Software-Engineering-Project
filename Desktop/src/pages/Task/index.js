@@ -99,7 +99,7 @@ function Task(/*{allPosts}*/) {
     const [posts] = useState(allPosts)
     const [currentPage, setCurrentPage] = useState(1)
     const [postsPerPage] = useState(10)
-    const [modal, setModal] = useState('none')
+    const [modal, setModal] = useState(false)
 
     const indexOfLastPost = currentPage * postsPerPage
     const indexOfFirstPost = indexOfLastPost - postsPerPage
@@ -108,7 +108,7 @@ function Task(/*{allPosts}*/) {
     const paginate = pageNumber  => setCurrentPage(pageNumber)
 
     return (
-        <div className={clsx(styles.wrapper)} style={{background: (modal==='block') && 'rgba(0,0,0,0.4)'}}>
+        <div className={clsx(styles.wrapper)}>
             <AddModal modal={modal} setModal={setModal} />
             <PageTitle name='Task'/>
             <div className={clsx(styles.buttons)}>
@@ -119,7 +119,7 @@ function Task(/*{allPosts}*/) {
                     <input className={clsx(styles.search)} placeholder='Search Tasks' spellCheck={false}/>
                     <button 
                         className={clsx(styles.add)}
-                        onClick={() => setModal('block')}
+                        onClick={() => setModal(true)}
                     >
                         +Add new
                     </button>
