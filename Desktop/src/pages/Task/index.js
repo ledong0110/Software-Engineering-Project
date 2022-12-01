@@ -6,6 +6,7 @@ import PageTitle from "../../components/Layout/PageTitle";
 import PageNumber from "../../components/Layout/PageNumber";
 import styles from './Task.module.scss'
 import AddModal from "../../components/Modal/Add/Add";
+import EmployeeModal from "../../components/Modal/Employee/Employee";
 
 const allPosts = [
     {
@@ -100,6 +101,8 @@ function Task(/*{allPosts}*/) {
     const [currentPage, setCurrentPage] = useState(1)
     const [postsPerPage] = useState(10)
     const [modal, setModal] = useState(false)
+    const [modalEmployee, setModalEmployee] = useState(false)
+    const [employee, setEmployee] = useState([])
 
     const indexOfLastPost = currentPage * postsPerPage
     const indexOfFirstPost = indexOfLastPost - postsPerPage
@@ -110,6 +113,7 @@ function Task(/*{allPosts}*/) {
     return (
         <div className={clsx(styles.wrapper)}>
             <AddModal modal={modal} setModal={setModal} />
+            <EmployeeModal modal={modalEmployee} setModal={setModalEmployee} setData={setEmployee}/>
             <PageTitle name='Task'/>
             <div className={clsx(styles.buttons)}>
                 <div className={clsx(styles.container)}>
@@ -143,7 +147,7 @@ function Task(/*{allPosts}*/) {
                             <div className={clsx(styles.content2, styles.flexCenter)}>{currentPost.title}</div>
                             <div className={clsx(styles.content3, styles.flexCenter)}>
                                 {`${currentPost.assign}/5`}
-                                {(currentPost.assign !== 5)? <FontAwesomeIcon className={clsx(styles.plus)} icon={faPlus}/> : <></>}
+                                {(currentPost.assign !== 5)? <FontAwesomeIcon className={clsx(styles.plus)} onClick={() => setModalEmployee(true)} icon={faPlus}/> : <></>}
                             </div>
                             <div className={clsx(styles.content4, styles.flexCenter)}>{currentPost.status}</div>
                             <div className={clsx(styles.content5, styles.flexCenter)}>{currentPost.date}</div>

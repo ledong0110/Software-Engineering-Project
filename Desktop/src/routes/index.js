@@ -7,7 +7,7 @@ import Authentication from '../pages/Authentication/index'
 // public routes
 const publicRoutes = [
     {path: '/', component: Authentication, layout: 'login'},
-    {path: '/task', component: Task, private: true},
+    {path: '/task', component: Task, private: false},
     {path: '/vehicle', component: Vehicle, private: true},
     {path: '/mcp', component: MCP, private: true},
     {path: '/chat', component: Chat, private: true},

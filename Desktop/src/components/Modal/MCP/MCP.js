@@ -1,22 +1,13 @@
 import styles from './MCP.module.scss'
 import clsx from 'clsx'
-import { experimentalStyled as styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import { useState } from 'react';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+import {Item} from '../index'
 
 const MCPs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
@@ -53,7 +44,7 @@ function MCPModal({modal, setModal, data, setData}) {
         <DialogContent>
             <Box
                 sx={{ flexGrow: 1, 
-                      width: '400px', 
+                      width: '450px', 
                       m: 'auto'
                     }}
             >

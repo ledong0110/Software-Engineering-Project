@@ -21,6 +21,8 @@ function AddModal({modal, setModal}) {
     const [MCP, setMCP] = useState([])
     const [vehicle, setVehicle] = useState([])
 
+    console.log(MCP, vehicle)
+
     const handleClose = () => {
         setModal(false)
     };
@@ -39,7 +41,7 @@ function AddModal({modal, setModal}) {
                     display: 'flex',
                     flexDirection: 'column',
                     m: 'auto',
-                    width: '400px',
+                    width: '450px',
                     }}
                 >
                     <div className={clsx(styles.modalContent)}>
