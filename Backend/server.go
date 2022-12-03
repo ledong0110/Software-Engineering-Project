@@ -14,7 +14,7 @@ import (
 	db "chat_module/config/db"
 	routes "chat_module/resources/routes"
 	utils "chat_module/resources/utility"
-    store "chat_module/config/session"
+    
 )
 
 func main() {
@@ -25,19 +25,23 @@ func main() {
     // Connect database
     db.Connect()
     // Start store session
-    store.InitializeSession()
+    
     // View engine
     engine := handlebars.New("./resources/views", ".hbs")
     for key, element := range utils.Helpers {
         engine.AddFunc(key, element)
     }
-    // engine.Reload(true)
+    engine.Reload(true)
     // Initialize server
     app := fiber.New(fiber.Config{
 		Views: engine,
         ViewsLayout: "layouts/main",
 	})
-    app.Use(cors.New())
+    app.Use(cors.New(cors.Config{
+        AllowCredentials: true,
+        AllowOrigins: "http://locahost:3000",
+        AllowHeaders:  "Origin, Content-Type, Accept",  
+    }))
     app.Static("/", "./public")
     
     routes.Route(app)

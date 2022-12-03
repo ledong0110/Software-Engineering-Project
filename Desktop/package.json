@@ -2,6 +2,7 @@
   "name": "uwc",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8000/",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/style": "^0.8.0",

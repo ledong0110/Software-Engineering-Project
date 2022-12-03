@@ -5,7 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	store "chat_module/config/session"
+	
 )
 
 
@@ -19,11 +19,10 @@ func InitializeEmployeeController() EmployeeController {
 	var employeeController = EmployeeController{}
 
 	employeeController.Home= func(c *fiber.Ctx) error {
-		sess, _ := store.Store.Get(c)
+		
 
         return c.Render("employee/site", fiber.Map{
-			"user_name": sess.Get("user_name"),
-			"picture" : sess.Get("picture"),
+			
 		})
 	}
 

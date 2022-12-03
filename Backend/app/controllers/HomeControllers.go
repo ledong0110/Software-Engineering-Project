@@ -2,20 +2,22 @@ package controllers
 
 import (
 	// "context"
-	// "time"
+	"os"
+	"time"
 	// "encoding/json"
 	"log"
 
 	// "github.com/jinzhu/copier"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
-	// "go.mongodb.org/mongo-driver/mongo/options"
-	
-	// _"go.mongodb.org/mongo-driver/bson/primitive"
 
-	utils "chat_module/resources/utility"
+	"go.mongodb.org/mongo-driver/mongo/options"
+
+	// _"go.mongodb.org/mongo-driver/bson/primitive"
 	model "chat_module/app/models"
-	store "chat_module/config/session"
+	utils "chat_module/resources/utility"
+
+	"github.com/golang-jwt/jwt/v4"
 )
 
 
@@ -31,6 +33,7 @@ type HomeController struct {
 	Logout func(*fiber.Ctx) error
 	Map func(*fiber.Ctx) error
 	EmptyPage func(*fiber.Ctx) error
+	TokenRefresh func(*fiber.Ctx) error
 }
 
 func InitializeHomeController() HomeController {
@@ -74,65 +77,105 @@ func InitializeHomeController() HomeController {
 			Username  string `json:"username"`
 			Password string  `json:"password"`
 		}{}
-		msg := struct {
-			Message string `json:"msg"`
-			Token string `json:"token"`
-		}{}
+		
 		if err := c.BodyParser(&payload); err != nil {
-			return err
+			return c.SendStatus(403)
 		}
 		log.Println(payload)
 		// log.Println(string(acc))
-		// opts := options.FindOne().SetProjection(bson.M{
-		// 	"username": 1,
-		// 	"password": 1,
-		// })
-		userDetail, err := User.FindOne(bson.M{"username": payload.Username})
+		opts := options.FindOne().SetProjection(bson.M{
+			
+			"online": 0,
+		})
+		
+		userDetail, err := User.FindOne(bson.M{"username": payload.Username}, opts)
 		if err != nil {
-			log.Println(err)
-			return c.JSON(msg)
+			
+			return c.SendStatus(403)
 		}
 		if utils.ComparePasswords(payload.Password, userDetail.Password){
 			log.Println("Successfully authentication")
+			userDetail.Password = ""
 		} else {
 			log.Println("Wrong Password")
-			msg.Message = "failed"
-			msg.Token = ""
-			return c.JSON(msg)
+			return c.SendStatus(403)
 		}
-		sess, err := store.Store.Get(c)
+		RefreshToken, err := utils.CreateRefreshToken(userDetail)
 		if err != nil {
-			log.Println(err)
-			return err
+			return c.SendStatus(fiber.StatusInternalServerError)
 		}
-		sess.Set("id", userDetail.ID.Hex())
-		sess.Set("user_name", userDetail.Name)
-		sess.Set("picture", userDetail.Picture)
-		sess.Set("role", userDetail.Role)
-		defer sess.Save()
-		msg.Message = "done"
-		msg.Token = sess.ID()
+		AccessToken, err := utils.CreateAccessToken((userDetail))
+		if err != nil {
+			return c.SendStatus(fiber.StatusInternalServerError)
+		}
 		
-		return c.JSON(msg)
+		User.UpdateOne(bson.M{"_id": userDetail.ID}, bson.M{"$set": bson.D{{"refreshToken", RefreshToken}}})
+		cookie := fiber.Cookie{
+			Name: "jwt", 
+			Value: RefreshToken,
+			HTTPOnly: true,
+			Secure: true,
+			SameSite: "None",
+			MaxAge: 24*60*60*1000,
+		}
+		
+		c.Cookie(&cookie)
+		return c.JSON(fiber.Map{"user": fiber.Map{"role": userDetail.Role, "picture": userDetail.Picture, "name": userDetail.Name}, "accessToken": AccessToken})
 	}
 
 	homeController.Logout = func (c *fiber.Ctx) error {
-		sess, err := store.Store.Get(c)
-		msg := struct {
-			Message string `json:"msg"`
-		}{}
-		if err != nil {
-			log.Println(err)
-			return err
+		refreshToken := c.Cookies("jwt", "none")
+		if refreshToken == "none" {
+			return c.SendStatus(204)
 		}
-		if err := sess.Destroy(); err != nil {
-            panic(err)
-        }
-		msg.Message = "done"
-		return c.JSON(msg)
-
+		userDetail, err := User.FindOne(bson.M{"refreshToken": refreshToken})
+		if err != nil {
+			c.ClearCookie("jwt")
+			return c.SendStatus(204)	
+		}
+		
+		User.UpdateOne(bson.M{"_id": userDetail.ID}, bson.M{"$set": bson.D{{"refreshToken", ""}}})
+		c.ClearCookie("jwt")
+		return c.SendStatus(204)	
 	}
 	
+	homeController.TokenRefresh = func (c *fiber.Ctx) error {
+		refreshToken := c.Cookies("jwt", "none")
+		if refreshToken == "none" {
+			return c.SendStatus(401)
+		}
+		opts := options.FindOne().SetProjection(bson.M{
+			"password": 0,	
+			"online": 0,
+		})
+		userDetail, err := User.FindOne(bson.M{"refreshToken": refreshToken}, opts)
+		if err != nil {
+			return c.SendStatus(fiber.StatusForbidden)
+		}
+		
+		
+		refreshClaims := jwt.StandardClaims{}
+		token, _ := jwt.ParseWithClaims(refreshToken, &refreshClaims,
+			func(token *jwt.Token) (interface{}, error) {
+				return []byte(os.Getenv("REFRESH_TOKEN_SECRET")), nil
+			},
+		)
+		
+		if token.Valid {
+			if refreshClaims.ExpiresAt < time.Now().Unix() {
+				c.ClearCookie("jwt")
+				return c.SendStatus(fiber.StatusForbidden)
+			}
+		} else {
+			c.ClearCookie(("jwt"))
+			return c.SendStatus(fiber.StatusForbidden)
+		}
+
+		AccessToken, _ := utils.CreateAccessToken(userDetail)
+		
+		return c.JSON(fiber.Map{"user": fiber.Map{"role": userDetail.Role, "picture": userDetail.Picture, "name": userDetail.Name}, "accessToken": AccessToken})
+	}
+
 	homeController.Map = func(c *fiber.Ctx) error {
 		return c.Render("map", fiber.Map{})
 	}
