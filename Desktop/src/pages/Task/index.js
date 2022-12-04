@@ -8,6 +8,7 @@ import styles from './Task.module.scss'
 import AddModal from "../../components/Modal/Add/Add";
 import EmployeeModal from "../../components/Modal/Employee/Employee";
 import EditModal from "../../components/Modal/Edit/Edit";
+import VehicleModal from "../../components/Modal/Vehicle/Vehicle";
 
 const allPosts = [
     {
@@ -106,9 +107,12 @@ function Task(/*{allPosts}*/) {
     const [modal, setModal] = useState(false)
     const [modalEmployee, setModalEmployee] = useState(false)
     const [modalEdit, setModalEdit] = useState(false)
+    const [modalVehicle, setModalVehicle] = useState(false)
     
     //post id to send to Employee modal
-    const[pid, setPid] = useState(-1)
+    const [pid, setPid] = useState(-1)
+    //selected tasks to delete or edit
+    const[selected, setSelected] = useState([])
 
     const indexOfLastPost = currentPage * postsPerPage
     const indexOfFirstPost = indexOfLastPost - postsPerPage
@@ -116,27 +120,51 @@ function Task(/*{allPosts}*/) {
 
     const paginate = pageNumber  => setCurrentPage(pageNumber)
 
-    const handleClickEmployee = (pid) => {
-        setPid(pid)
-        setModalEmployee(true)
+    const handleCheck = (MCP) => {
+        if (selected.includes(MCP)) {
+          if (selected.length === 1) setSelected([])
+          else {
+            const index = selected.indexOf(MCP)
+            let newSelected = [...selected]
+            newSelected.splice(index, 1)
+            setSelected(newSelected)
+          }
+        }
+        else {
+          setSelected([...selected, MCP])
+        }
+      }
+
+    const handleClick = (pid, type) => {
+        if (type === 'edit') {
+            if (selected.length !== 1) alert('must choose 1 task')
+            else {
+                setPid(selected)
+                setModalEdit(true)
+            }
+        }
+        else {
+            setPid(pid)
+            if (type === 'employee') setModalEmployee(true)
+            else setModalVehicle(true)
+        }
     }
 
-    const handleClickEdit = (pid = 0) => {
-        setPid(pid)
-        setModalEdit(true)
-    }
+    const handleDelete = () => {}
+    console.log('selected tasks: ', selected)
 
     return (
         <div className={clsx(styles.wrapper)}>
             <AddModal modal={modal} setModal={setModal} />
             <EmployeeModal modal={modalEmployee} setModal={setModalEmployee} pid={pid}/>
             <EditModal modal={modalEdit} setModal={setModalEdit} pid={pid} />
+            <VehicleModal modal={modalVehicle} setModal={setModalVehicle} pid={pid} />
             <PageTitle name='Task'/>
             <div className={clsx(styles.buttons)}>
                 <div className={clsx(styles.container)}>
                     <button className={clsx(styles.button)}>Assign</button>
-                    <button className={clsx(styles.button)} onClick={handleClickEdit}>Edit</button>
-                    <button className={clsx(styles.button)}>Delete</button>
+                    <button className={clsx(styles.button)} onClick={() => handleClick(selected, 'edit')}>Edit</button>
+                    <button className={clsx(styles.button)} onClick={handleDelete}>Delete</button>
                     <input className={clsx(styles.search)} placeholder='Search Tasks' spellCheck={false}/>
                     <button 
                         className={clsx(styles.add)}
@@ -149,6 +177,7 @@ function Task(/*{allPosts}*/) {
             <div className={clsx(styles.boardTitle)}>
                 <div className={clsx(styles.content1, styles.flexCenter)}>ID</div>
                 <div className={clsx(styles.content2, styles.flexCenter)}>Title</div>
+                <div className={clsx(styles.content6, styles.flexCenter)}>Vehicle</div>
                 <div className={clsx(styles.content3, styles.flexCenter)}>Assigned to</div>
                 <div className={clsx(styles.content4, styles.flexCenter)}>Status</div>
                 <div className={clsx(styles.content5, styles.flexCenter)}>Date</div>
@@ -158,16 +187,27 @@ function Task(/*{allPosts}*/) {
                     return (
                         <div key={currentPost.id} className={clsx(styles.flexCenter, styles.boardRow)}>
                             <div className={clsx(styles.content1, styles.flexCenter)}>
-                                <input type='checkbox' className={clsx(styles.checkBox)}/>
+                                <input 
+                                    type='checkbox' 
+                                    className={clsx(styles.checkBox)} 
+                                    onClick={() => handleCheck(currentPost.id)}
+                                />
                                 {currentPost.id}
                             </div>
                             <div className={clsx(styles.content2, styles.flexCenter)}>{currentPost.title}</div>
+                            <div className={clsx(styles.content6, styles.flexCenter)}>
+                                <FontAwesomeIcon 
+                                    style={{cursor: 'pointer'}}
+                                    onClick={() => handleClick(currentPost.id, 'vehicle')} 
+                                    icon={faPlus}
+                                />
+                            </div>
                             <div className={clsx(styles.content3, styles.flexCenter)}>
                                 {`${currentPost.assign.length}/5`}
                                 {(currentPost.assign.length !== 5)? 
                                     <FontAwesomeIcon 
                                         className={clsx(styles.plus)} 
-                                        onClick={() => handleClickEmployee(currentPost.id)} 
+                                        onClick={() => handleClick(currentPost.id, 'employee')} 
                                         icon={faPlus}
                                     /> : <></>}
                             </div>
