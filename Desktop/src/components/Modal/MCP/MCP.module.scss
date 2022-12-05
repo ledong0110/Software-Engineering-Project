@@ -42,8 +42,14 @@
 }
 
 .employeeButton {
-    height: 25px;
-    width: 25px;
+    height: 22px;
+    width: 22px;
     border-radius: 50%;
     background: transparent;
+    margin: 0 2.5rem 0 1.5rem;
+}
+
+.element {
+    display: flex;
+    flex-direction: column;
 }
