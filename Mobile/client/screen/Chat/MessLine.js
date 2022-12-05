@@ -30,7 +30,7 @@ function MessLine({ route }) {
 	const [userName, setUserName] = useState('');
 	const [messages, setMessages] = useState([]);
 	const ws = useRef();
-	ws.current = new WebSocket('ws://127.0.0.1:3000');
+	ws.current = new WebSocket('http://192.168.1.118:3000');
 
 	useEffect(() => {
 		ws.current.open = () => {

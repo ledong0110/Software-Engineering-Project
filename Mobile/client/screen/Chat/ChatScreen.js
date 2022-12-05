@@ -19,9 +19,6 @@ import {
 import Header from '../../components/Header';
 import ContactList from '../../data/ContactList';
 
-
-
-
 const Item = ({ item }) => {
 	// const [lastText, setLastText] = useState('');
 	// const [lastTime, setLastTime] = useState('');

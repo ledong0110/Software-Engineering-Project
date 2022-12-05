@@ -6,7 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import CloseButton from '../../components/CloseButton';
 import Header from '../../components/Header';
 import Info from '../../components/Info';
-import UserInfo from '../../data/UserInfo'
+import UserInfo from '../../data/UserInfo';
 // class User {
 // 	constructor(name, phone, email) {
 // 		this.name = name;
@@ -30,7 +30,7 @@ import UserInfo from '../../data/UserInfo'
 
 export default function AccountInfo() {
 	const navigation = useNavigation();
-	console.log(Hello)
+	console.log('Hello');
 	const [name, setName] = useState(UserInfo.name);
 	const [email, setEmail] = useState(UserInfo.email);
 	const [phone, setPhone] = useState(UserInfo.phone);

@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
 	arrow: {
 		width: 40,
 		height: 28,
+		marginRight: 10,
 	},
 });
 export default Info;

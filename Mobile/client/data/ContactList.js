@@ -1,7 +1,6 @@
-import {v4 as uuidv4} from 'uuid'
 const ContactList = [
 	{
-		id: uuidv4(),
+		id: 123,
 		name: 'Trần Văn C',
 		pictureUrl: '../../assets/avatar.png',
 		preview: 'Hello developer',
@@ -10,7 +9,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: new Date(),
+				createdAt: '11:11',
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -19,7 +18,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: new Date(),
+				createdAt: '11:11',
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -28,7 +27,7 @@ const ContactList = [
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 1234,
 		name: 'Lê Thị B',
 		pictureUrl: '../../assets/avatar.png',
 		preview: 'Hello developer',
@@ -37,7 +36,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: new Date(),
+				createdAt: '11:11',
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -46,7 +45,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: new Date(),
+				createdAt: '11:11',
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -55,7 +54,7 @@ const ContactList = [
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 12333,
 		name: 'Thông báo MCP',
 		pictureUrl: '../../assets/avatar.png',
 		preview: 'Hello developer',
@@ -64,7 +63,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: new Date(),
+				createdAt: '11:11',
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -73,7 +72,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: new Date(),
+				createdAt: '11:11',
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -82,7 +81,7 @@ const ContactList = [
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 12121,
 		name: 'Nguyễn Văn A',
 		pictureUrl: '../../assets/avatar.png',
 		preview: 'Hello developer',
@@ -91,7 +90,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: new Date(),
+				createdAt: '11:11',
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -100,7 +99,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: new Date(),
+				createdAt: '11:11',
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
