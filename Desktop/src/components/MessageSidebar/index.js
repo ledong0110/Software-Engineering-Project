@@ -6,7 +6,7 @@ import { useLocation, useNavigate} from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 
-function MessageSidebar({setSelected}) {
+function MessageSidebar({setSelectedUser}) {
     const [users, setUsers] = useState()
     const [focus, setFocus] = useState()
     const { auth } = useAuth()
@@ -58,10 +58,11 @@ function MessageSidebar({setSelected}) {
         
     }
 
-    const handleClick = (id) => {
-        setFocus(id)
-        setSelected(id)
+    const handleClick = (user) => {
+        setSelectedUser(user)
+        setFocus(user.id)
     }
+    
 
     return (  
         <div className={clsx(styles.sidebar)}>
@@ -70,13 +71,12 @@ function MessageSidebar({setSelected}) {
                 <input style={{width: '90%'}} placeholder='Tìm kiếm' spellCheck={false} onChange={handleChange}/>
             </div>
             { users?.length
-                ? users.map((preview) => (
-                        <div 
-                            key={preview.user.id} 
+                ? users.map((preview, index) => (
+                        <div
+                            style={{background: (preview.user.id===focus) && 'rgba(0, 204, 144, 0.25)'}} 
+                            key={index} 
                             className={clsx(styles.receiver)} 
-                            style={{background: (focus===preview.user.id) && 'rgba(0, 204, 144, 0.25)'}}
-                            onClick={() => handleClick(preview.user.id)}
-                        >
+                            onClick={() => handleClick(preview.user)}>
                             <div className={clsx(styles.container)}>
                                 <img className={clsx(styles.picture)} src={preview.user.picture} alt="janitor"/>
                                 <div>

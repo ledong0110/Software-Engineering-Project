@@ -6,17 +6,21 @@ import (
 	// "os"
 	// "time"
 
-	"encoding/json"
+	// "encoding/json"
 	// "log"
+
+	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
+	"github.com/golang-jwt/jwt/v4"
 	"go.mongodb.org/mongo-driver/bson"
 
 	// "go.mongodb.org/mongo-driver/bson/primitive"
 
 	model "chat_module/app/models"
-	store "chat_module/config/session"
+	
 	message_handler "chat_module/resources/utility/message"
 )
 
@@ -37,18 +41,39 @@ func InitializeMessageController() MessageController {
 	// messageController.Hub = message_handler.NewHub()
 	// go messageController.Hub.Run()
 	messageController.GetCurrentUserID = func (c *fiber.Ctx) error {
-		sess, _ := store.Store.Get(c)
-		c.Locals("id", sess.Get("id"))
+		refreshToken := c.Cookies("jwt", "none")
+		if refreshToken == "none" {
+			return c.SendStatus(401)
+		}
+		refreshClaims := jwt.StandardClaims{}
+		jwt.ParseWithClaims(refreshToken, &refreshClaims,
+			func(token *jwt.Token) (interface{}, error) {
+				return []byte(os.Getenv("REFRESH_TOKEN_SECRET")), nil
+			},
+		)
+		userID := refreshClaims.Issuer
+		log.Println("Hello")
+		c.Locals("id", userID)
 		return c.Next()
 	}
 	messageController.CreateNewSocketUser = func (c *websocket.Conn) {
-
+		log.Println("New user enter")
 		message_handler.CreateNewSocketUser(Hub, c, c.Locals("id").(string))
 	}
 
 	messageController.GetConversation = func (c *fiber.Ctx) error {
-		sess, _ := store.Store.Get(c)
-		fromUserID := sess.Get("id")
+		refreshToken := c.Cookies("jwt", "none")
+		if refreshToken == "none" {
+			return c.SendStatus(401)
+		}
+		refreshClaims := jwt.StandardClaims{}
+		jwt.ParseWithClaims(refreshToken, &refreshClaims,
+			func(token *jwt.Token) (interface{}, error) {
+				return []byte(os.Getenv("REFRESH_TOKEN_SECRET")), nil
+			},
+		)
+		
+		fromUserID := refreshClaims.Issuer
 		toUserID := c.Params("ToUser")
 		filter := bson.M{
 			"$or": []bson.M{
@@ -76,9 +101,9 @@ func InitializeMessageController() MessageController {
 		}
 
 		conversations, _ := Message.Find(filter)
-		convertJson, _ := json.Marshal(conversations)
-		jsonConversation := string(convertJson)
-		return c.SendString(jsonConversation)
+		
+		
+		return c.JSON(fiber.Map{"conversation": conversations})
 	}
 
 	return messageController

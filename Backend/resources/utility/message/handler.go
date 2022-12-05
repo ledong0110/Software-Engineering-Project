@@ -110,7 +110,7 @@ func handleSocketPayloadEvents(client *Client, socketEventPayload SocketEventStr
 		message := (socketEventPayload.EventPayload.(map[string]interface{})["message"]).(string)
 		fromUserID := (socketEventPayload.EventPayload.(map[string]interface{})["fromUserID"]).(string)
 		toUserID := (socketEventPayload.EventPayload.(map[string]interface{})["toUserID"]).(string)
-		
+		log.Println(message)
 		if message != "" && fromUserID != "" && toUserID != "" {
 
 			messagePacket := model.MessageStruct{

@@ -39,9 +39,9 @@ type HomeController struct {
 func InitializeHomeController() HomeController {
 	var homeController = HomeController{}
 
-	homeController.Home = func (c *fiber.Ctx) error {
-		return c.SendFile("./public/build/index.html")
-	}
+	// homeController.Home = func (c *fiber.Ctx) error {
+	// 	return c.SendFile("./public/build/index.html")
+	// }
 
 	homeController.InsertPage = func (c *fiber.Ctx) error {
 		return c.Render("user/insert", fiber.Map{})

@@ -1,11 +1,13 @@
+
 const events = require('events');
 
-const CHAT_SERVER_ENDPOINT = window.location.host;
+const CHAT_SERVER_ENDPOINT = 'localhost:3000';
 let webSocketConnection = null;
 
 export const eventEmitter = new events.EventEmitter();
 
 export function connectToWebSocket(userID) {
+    
     if (userID === "" && userID === null && userID === undefined) {
         return {
             message: "You need User ID to connect to the Chat server",
@@ -18,12 +20,13 @@ export function connectToWebSocket(userID) {
         }
     }
     if (window["WebSocket"]) {
-        if (window.location.protocol === 'https:') {
-            webSocketConnection = new WebSocket("wss://" + CHAT_SERVER_ENDPOINT + "/chat-app/ws/register");
-        }
-        else {
-            webSocketConnection = new WebSocket("ws://" + CHAT_SERVER_ENDPOINT + "/chat-app/ws/register");
-        }
+        // if (window.location.protocol === 'https:') {
+        //     webSocketConnection = new WebSocket("wss://"  + CHAT_SERVER_ENDPOINT + "/chat-app/ws/register");
+        // }
+        // else {
+        //     webSocketConnection = new WebSocket("ws://" + CHAT_SERVER_ENDPOINT + "/chat-app/ws/register");
+        // }
+        webSocketConnection = new WebSocket("ws://" + CHAT_SERVER_ENDPOINT + "/chat-app/ws/register");
         return {
             message: "You are connected to Chat Server",
             webSocketConnection
@@ -35,6 +38,7 @@ export function sendWebSocketMessage(messagePayload) {
     if (webSocketConnection === null) {
       return;
     }
+    console.log(messagePayload)
     webSocketConnection.send(
       JSON.stringify({
         eventName: 'message',
