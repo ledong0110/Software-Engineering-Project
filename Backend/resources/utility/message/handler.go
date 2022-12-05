@@ -224,7 +224,7 @@ func (c *Client) writePump() {
 				return
 			}
 			
-			c.webSocketConnection.SetWriteDeadline(time.Now().Add(writeWait))
+			// c.webSocketConnection.SetWriteDeadline(time.Now().Add(writeWait))
 			w, err := c.webSocketConnection.NextWriter(websocket.TextMessage)
 			if err != nil {
 				return

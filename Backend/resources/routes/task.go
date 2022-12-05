@@ -5,11 +5,13 @@ import (
 
 	controllers "chat_module/app/controllers"
 )
-var taskRouter controllers.TaskController= controllers.InitializeTaskController()
+var taskController controllers.TaskController= controllers.InitializeTaskController()
 
 func TaskRouter(task fiber.Router) {
-	// task.Get("/get-all-task")
-	// task.Get("/get-today-task")
+	task.Post("/insert-task", taskController.InsertTask)
+	task.Post("/edit-task", taskController.EditTask)
+	task.Post("/get-one-task", taskController.GetOneTask)
+	task.Post("/get-all-task", taskController.GetAllTask)
 	// task.Get("/mcps")
 	// task.Get("/vehicles")
 }
