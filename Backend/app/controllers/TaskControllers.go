@@ -3,17 +3,21 @@ package controllers
 import (
 	"chat_module/app/models"
 	"log"
-	"go.mongodb.org/mongo-driver/bson"
+
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var Task = models.Task
+var Mcp = models.Mcp
 
 type TaskController struct {
 	InsertTask func (c *fiber.Ctx) error
 	EditTask func (c *fiber.Ctx) error
 	GetOneTask func (c *fiber.Ctx) error
 	GetAllTask func (c *fiber.Ctx) error
+	GetAllMCP func(c *fiber.Ctx) error
 }
 
 func InitializeTaskController() TaskController {
@@ -69,6 +73,20 @@ func InitializeTaskController() TaskController {
 			return c.SendStatus(fiber.StatusBadRequest)
 		}
 		return c.JSON(task)
+
+	}
+
+	taskController.GetAllMCP = func(c *fiber.Ctx) error {
+		opts := options.Find().SetProjection(bson.M{
+			
+			"_id": 1,
+			"status": 1,
+		})
+		mcps, err := Mcp.Find(bson.M{}, opts)
+		if err != nil {
+			return c.SendStatus(fiber.StatusBadRequest)
+		}
+		return c.JSON(mcps)
 
 	}
 	return taskController

@@ -33,12 +33,12 @@ function EditModal({modal, setModal, pid}) {
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate()
     const location = useLocation()
-    const [id, setId] = useState(0)
+    const [id, setId] = useState(-1)
     useEffect(() => {
         let isMounted = true
         const controller = new AbortController()
 
-        const getOneTask = async () => {
+        const getOneTask = async (pid) => {
             try {
                 const response = await axiosPrivate.post(`/task/get-one-task`, 
                 JSON.stringify({"id": parseInt(pid)}),
@@ -60,15 +60,15 @@ function EditModal({modal, setModal, pid}) {
                 navigate('/', { state: { from: location }, replace: true})
             }
         }
-        if (pid !== -1) 
-            getOneTask()
+        if (parseInt(pid) !== -1) 
+            getOneTask(pid)
 
         return () => {
             
             isMounted = false
             controller.abort()
         }
-    }, [modal])
+    }, [pid, modal])
     const handleSubmit = async (e) => {
         e.preventDefault()
         let task = {id, title, type, number, MCP, description, time}
@@ -90,12 +90,14 @@ function EditModal({modal, setModal, pid}) {
         }
         
     }
+  
     return (
         <>
         <MCPModal mcp={MCP} modal={modalMCP} setModal={setModalMCP} setData={setMCP}/>
         <Dialog open={modal} onClose={() => setModal(false)}>
             <DialogTitle className={clsx(styles.title)} style={{marginBottom: '1.5rem'}}>Chỉnh sửa</DialogTitle>
             <DialogContent>
+                {id !== -1 &&
                 <Box sx={{ width:500, margin: 0}} component='form' onSubmit={handleSubmit}>
                     <Stack spacing={8} direction="row" className={clsx(styles.flexCenter)} style={{marginTop: '0.5rem'}}>
                         <TextField 
@@ -184,7 +186,7 @@ function EditModal({modal, setModal, pid}) {
                         <button type="reset" onClick={() => setModal(false)}>Đóng</button>
                         <button type="submit" onClick={handleSubmit}>Gửi</button>
                     </div>
-                </Box>
+                </Box>}
             </DialogContent>
         </Dialog> 
         </>
