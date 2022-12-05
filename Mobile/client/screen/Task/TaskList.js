@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import React, { useState } from 'react';
+import UserTask from '../../data/UserTask';
 import {
 	FlatList,
 	Image,
@@ -14,101 +15,7 @@ import {
 } from 'react-native';
 const Stack = createStackNavigator();
 
-const Task =
-	//array of tasks
-	[
-		{
-			title: '2022-12-20',
-			//array of data details in one day
-			data: [
-				{
-					ID: 334,
-					MCP: '1, 2, 3',
-					checkin: '08:30 AM',
-					checkout: '',
-				},
-				{
-					ID: 321,
-					MCP: '3, 5, 8',
-					checkin: '09:30 AM',
-					checkout: '',
-				},
-				//...more
-			],
-		},
-		{
-			title: '2022-12-15',
-			data: [
-				{
-					ID: 315,
-					MCP: '1, 2, 3',
-					checkin: '08:30 AM',
-					checkout: '',
-				},
-				{
-					ID: 311,
-					MCP: '6, 10, 13',
-					checkin: '09:30 AM',
-					checkout: '',
-				},
-				//...more
-			],
-		},
-		{
-			title: '2022-12-09',
-			data: [
-				{
-					ID: 309,
-					MCP: '12, 20, 26',
-					checkin: '08:30 AM',
-					checkout: '',
-				},
-				{
-					ID: 308,
-					MCP: '1, 3, 33',
-					checkin: '09:30 AM',
-					checkout: '',
-				},
-				//...more
-			],
-		},
-		{
-			title: '2022-12-05',
-			data: [
-				{
-					ID: 304,
-					MCP: '2, 5, 12',
-					checkin: '08:30 AM',
-					checkout: '',
-				},
-				//...more
-			],
-		},
-		{
-			title: '2022-12-01',
-			data: [
-				{
-					ID: 302,
-					MCP: '5, 6, 7',
-					checkin: '08:30 AM',
-					checkout: '',
-				},
-				{
-					ID: 301,
-					MCP: '3, 5, 9',
-					checkin: '09:30 AM',
-					checkout: '',
-				},
-				{
-					ID: 300,
-					MCP: '3, 5, 8',
-					checkin: '09:30 AM',
-					checkout: '',
-				},
-				//...more
-			],
-		},
-	];
+
 
 const Item = ({ title }) => {
 	const navigation = useNavigation();
@@ -174,10 +81,10 @@ export function MonthlyTask() {
 
 	let today = new Date();
 
-	for (let obj in Task) {
-		var date = new Date(Task[obj].title);
+	for (let obj in UserTask) {
+		var date = new Date(UserTask[obj].title);
 		if (date.getMonth() === today.getMonth()) {
-			taskList.push(Task[obj]);
+			taskList.push(UserTask[obj]);
 		}
 	}
 
@@ -216,10 +123,10 @@ export function WeeklyTask() {
 	var firstDay = new Date(today.setDate(first)).toISOString().slice(0, 10);
 	var lastDay = new Date(today.setDate(last)).toISOString().slice(0, 10);
 
-	for (let obj in Task) {
-		var date = Task[obj].title;
+	for (let obj in UserTask) {
+		var date = UserTask[obj].title;
 		if (date <= lastDay && date >= firstDay) {
-			taskList.push(Task[obj]);
+			taskList.push(UserTask[obj]);
 		}
 	}
 	return (
@@ -253,10 +160,10 @@ export function DailyTask() {
 
 	let today = new Date().toISOString().slice(0, 10);
 
-	for (let obj in Task) {
-		var date = Task[obj].title;
+	for (let obj in UserTask) {
+		var date = UserTask[obj].title;
 		if (date === today) {
-			taskList = Task[obj].data;
+			taskList = UserTask[obj].data;
 		}
 	}
 

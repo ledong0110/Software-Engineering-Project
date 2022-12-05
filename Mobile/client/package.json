@@ -49,7 +49,8 @@
 		"react-navigation": "^4.4.4",
 		"socket.io": "^4.5.4",
 		"socket.io-client": "^4.5.4",
-		"topo": "^3.0.3"
+		"topo": "^3.0.3",
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.9",

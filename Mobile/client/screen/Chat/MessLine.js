@@ -29,16 +29,28 @@ function MessLine({ route }) {
 
 	const [userName, setUserName] = useState('');
 	const [messages, setMessages] = useState([]);
+	const ws = useRef();
+	ws.current = new WebSocket('ws://127.0.0.1:3000');
 
 	useEffect(() => {
-		setMessages(
-			item.message
-		);
+		ws.current.open = () => {
+			console.log('Connected to the server');
+			setMessages(item.message);
+		};
+		ws.current.onerror = (e) => {
+			console.log(e.message);
+		};
+		ws.current.onmessage = (e) => {
+			console.log(e.data);
+		};
+		ws.current.onclose = () => {
+			console.log('Disconnected to the server');
+		};
 	}, []);
 
 	// const currentUser = getAuth().currentUser;
 	// const uid = currentUser.uid;
-	
+
 	// const db = getFirestore();
 
 	// const roomID = item.id > uid ? item.id + '-' + uid : uid + '-' + item.id;
@@ -99,8 +111,10 @@ function MessLine({ route }) {
 		setMessages((previousMessages) =>
 			GiftedChat.append(previousMessages, messages)
 		);
-		// if (messages) {
-		// 	ws.current.send(JSON.stringify(messages))
+		if (messages) {
+			console.log(messages)
+			ws.current.send(JSON.stringify(messages));
+		}
 		// 	const { _id, createdAt, text, user } = messages[0];
 		// 	addDoc(roomMessageRef, {
 		// 		_id,

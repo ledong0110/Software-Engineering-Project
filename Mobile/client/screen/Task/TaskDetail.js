@@ -9,7 +9,7 @@ import {
 	Linking,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { MCP_data } from './CoordMap';
+import MCP_data from '../../data/MCP';
 
 function TaskDetail({ route }) {
 	const { ID, checkin, checkout, MCP } = route.params;
