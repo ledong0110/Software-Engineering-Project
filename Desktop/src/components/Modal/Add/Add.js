@@ -15,6 +15,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import MCPModal from '../MCP/MCP';
 import { useState } from 'react';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+
 
 function AddModal({modal, setModal}) {
     const [modalMCP, setModalMCP] = useState(false)
@@ -22,17 +30,42 @@ function AddModal({modal, setModal}) {
     const [type, setType] = useState('Collector')
     const [number, setNumber] = useState(0)
     const [MCP, setMCP] = useState([])
-    const [descrip, setDescrip] = useState('')
-
+    const [time, setTime] = useState(dayjs())
+    const [description, setDescrip] = useState('')
+    const axiosPrivate = useAxiosPrivate()
+    const navigate = useNavigate()
+    const location = useLocation()
     console.log(MCP)
 
     const handleClose = () => {
         setModal(false)
     };
-
+    const getUsers = async () => {
+        
+    }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        let task = {title, type, number, MCP, description, time}
+        task.number = parseInt(task.number)
+        try {
+            const response = await axiosPrivate.post(`/task/insert-task`, 
+                JSON.stringify(task),
+            )
+            alert("Đã thêm task mới thành công")
+            setTitle("")
+            setNumber(0)
+            setMCP([])
+            setDescrip("")
+            setModal(false)
+        } catch (err) {
+            
+            navigate('/', { state: { from: location }, replace: true})
+        }
+        
+    }
     return ( 
         <>
-        <MCPModal modal={modalMCP} setModal={setModalMCP} setData={setMCP}/>
+        <MCPModal mcp={MCP} modal={modalMCP} setModal={setModalMCP} setData={setMCP}/>
         <Dialog open={modal} onClose={handleClose}>
             <DialogTitle className={clsx(styles.title)} style={{marginBottom: '0px'}}>Tạo nhiệm vụ mới</DialogTitle>
             <DialogContent>
@@ -40,6 +73,7 @@ function AddModal({modal, setModal}) {
                     noValidate
                     component="form"
                     sx={{  width: 500, margin: 0}}
+                    onSubmit={handleSubmit}
                 >
                     <Stack className={clsx(styles.flexCenter)} style={{marginTop: '2rem'}}>
                         <TextField 
@@ -50,6 +84,20 @@ function AddModal({modal, setModal}) {
                             onChange= {e => setTitle(e.target.value)}
                             defaultValue={title}
                         />
+                    </Stack>
+                    <Stack className={clsx(styles.flexCenter)} style={{marginTop: '2rem'}}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} >
+                            <DesktopDatePicker
+                                className={clsx(styles.time)}
+                                label="Thời gian"
+                                value={time}
+                                minDate={dayjs('2017-01-01')}
+                                onChange={(newValue) => {
+                                    setTime(newValue);
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                                />
+                        </LocalizationProvider>
                     </Stack>
                     <Stack spacing={4} direction="row" className={clsx(styles.flexCenter)} style={{marginTop: '2rem'}}>
                         <FormControl sx={{ width: 120, minHeight: 32, borderColor: 'common.black' }} >
@@ -91,12 +139,12 @@ function AddModal({modal, setModal}) {
                             label="Mô tả" 
                             variant="outlined" 
                             onChange= {e => setDescrip(e.target.value)}
-                            defaultValue={descrip}
+                            defaultValue={description}
                         />
                     </Stack>
                     <div className={clsx(styles.modalButton)}>
-                        <button onClick={() => setModal(false)}>Đóng</button>
-                        <button>Tạo</button>
+                        <button type="reset" onClick={() => setModal(false)}>Đóng</button>
+                        <button type="submit">Tạo</button>
                     </div>
                 </Box>
             </DialogContent>

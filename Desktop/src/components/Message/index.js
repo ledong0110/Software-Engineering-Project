@@ -95,7 +95,7 @@ export default function Message({ selectedUser}) {
         }
     }
     selectedUser?.id && getChatConversation()
-
+    
     return () => {
         
         isMounted = false
@@ -112,7 +112,7 @@ export default function Message({ selectedUser}) {
         scrollMessageContainer(messageContainer);
       }
     };
-
+    scrollMessageContainer(messageContainer)
     eventEmitter.on('message-response', newMessageSubscription);
 
     return () => {
@@ -159,7 +159,7 @@ export default function Message({ selectedUser}) {
   return (
     <div  className={clsx(styles.container)}>
     {conversation?.length > 0
-                  ? getMessageUI(messageContainer, auth, selectedUser, conversation)
+                  ? getMessageUI(messageContainer, auth, selectedUser, conversation) 
                   : getInitiateConversationUI(selectedUser)
     }
       <div className={clsx(styles.chat)}>

@@ -6,14 +6,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {Item} from '../index'
 
 const MCPs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
-function MCPModal({modal, setModal, data, setData}) {
+function MCPModal({mcp, modal, setModal, data, setData}) {
     const [selected, setSelected] = useState([])
-
+    useEffect(() => setSelected(mcp))
     const handleClose = () => {
       setModal(false)
     };

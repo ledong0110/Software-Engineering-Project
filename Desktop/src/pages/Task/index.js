@@ -12,7 +12,7 @@ import VehicleModal from "../../components/Modal/Vehicle/Vehicle";
 
 const allPosts = [
     {
-        id: 304,
+        id: 1,
         title: "MCP 1,2,3 District 1",
         assign: [],
         status: "complete",
