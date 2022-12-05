@@ -27,6 +27,7 @@ func InitializeTaskController() TaskController {
 		if err := c.BodyParser(&newTask); err != nil {
 			return c.SendStatus(fiber.ErrBadRequest.Code)
 		}
+		log.Println(newTask )
 		id, _ := Task.Count(bson.M{})
 		newTask.ID = int(id)
 		_, err := Task.InsertOne(newTask)
