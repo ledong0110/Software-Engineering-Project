@@ -9,11 +9,11 @@ import (
 )
 
 func Route(app *fiber.App) {
-	app.Use("/chat-app/ws", middleware.VerifyWebSocket)
+	
 	message := app.Group("/chat-app")
-	message.Use(jwtware.New(jwtware.Config{
-		SigningKey: []byte("se221"),
-	}))
+	// message.Use(jwtware.New(jwtware.Config{
+	// 	SigningKey: []byte(os.Getenv("ACCESS_TOKEN_SECRET")),
+	// }))
 	MessageRouter(message)
 
 	backofficer := app.Group("/backofficer")

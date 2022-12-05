@@ -17,6 +17,6 @@ func HomeRouter(home fiber.Router) {
 	home.Get("/login", homeController.ShowLogin)
 	home.Post("/login", homeController.Login)
 	home.Get("/map", homeController.Map)
-	home.Get("/", homeController.Home)
-	home.Get("*", homeController.EmptyPage)
+	// home.Get("/", homeController.Home)
+	// home.Get("*", homeController.EmptyPage)
 }
