@@ -30,6 +30,7 @@ import UserInfo from '../../data/UserInfo'
 
 export default function AccountInfo() {
 	const navigation = useNavigation();
+	console.log(Hello)
 	const [name, setName] = useState(UserInfo.name);
 	const [email, setEmail] = useState(UserInfo.email);
 	const [phone, setPhone] = useState(UserInfo.phone);
