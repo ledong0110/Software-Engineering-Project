@@ -18,6 +18,7 @@ const privateRoutes = [
     {path: 'task', component: Task},
     {path: 'vehicle', component: Vehicle},
     {path: 'mcp', component: MCP},
+    {path: 'chat', component: Chat},
 ]
 
 export {publicRoutes, privateRoutes};

@@ -3,7 +3,7 @@ import React from 'react';
 import './Authentication.css';
 
 import Login from './login/login';
-import Registration from './registration/registration'
+// import Registration from './registration/registration'
 
 function Authentication() {
 
@@ -25,7 +25,7 @@ function Authentication() {
   return (
     <>
     <Login/>
-    <Registration/>
+   
     </>
   );
 }

@@ -97,12 +97,12 @@ const messages = [
 // }
 function Chat() {
   const [newMessage, setNewMessage] = useState('')
-  
+  const [selectedUser, setSelectedUser] = useState()
 // const handleChange = () => {}
 
     return (
         <div className={clsx(styles.wrapper)}>
-          <MessageSidebar previews={previews}/>
+          <MessageSidebar setSelectedUser={setSelectedUser}/>
           <div className={clsx(styles.container)}>
             {messages.map((message, index) => {
               return (

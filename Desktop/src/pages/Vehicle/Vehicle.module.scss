@@ -1,7 +1,15 @@
+.centering {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.wrapper {
+    width: 100%
+}
 .boardTitle,
 .boardContent {
     width: 92.7%;
-    margin: 0 80px 0 20px;
+    margin: 0 50px 0 50px;
 }
 
 .boardTitle {

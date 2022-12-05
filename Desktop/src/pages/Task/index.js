@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faBatteryFull, faPlus } from '@fortawesome/free-solid-svg-icons';
 import PageTitle from "../../components/Layout/PageTitle";
 import PageNumber from "../../components/Layout/PageNumber";
 import styles from './Task.module.scss'
@@ -111,10 +111,12 @@ function Task(/*{allPosts}*/) {
     const paginate = pageNumber  => setCurrentPage(pageNumber)
 
     return (
-        <div className={clsx(styles.wrapper)}>
+        <>
             <AddModal modal={modal} setModal={setModal} />
             <EmployeeModal modal={modalEmployee} setModal={setModalEmployee} setData={setEmployee}/>
             <PageTitle name='Task'/>
+            <div className={clsx(styles.centering)}>
+            <div className={clsx(styles.wrapper)}>
             <div className={clsx(styles.buttons)}>
                 <div className={clsx(styles.container)}>
                     <button className={clsx(styles.button)}>Assign</button>
@@ -147,7 +149,7 @@ function Task(/*{allPosts}*/) {
                             <div className={clsx(styles.content2, styles.flexCenter)}>{currentPost.title}</div>
                             <div className={clsx(styles.content3, styles.flexCenter)}>
                                 {`${currentPost.assign}/5`}
-                                {(currentPost.assign !== 5)? <FontAwesomeIcon className={clsx(styles.plus)} onClick={() => setModalEmployee(true)} icon={faPlus}/> : <></>}
+                                {(currentPost.assign !== 5)? <FontAwesomeIcon className={clsx(styles.plus)} onClick={() => setModalEmployee(true)} icon={faPlus}/> : <FontAwesomeIcon className={clsx(styles.plus)} icon={faBatteryFull}/>}
                             </div>
                             <div className={clsx(styles.content4, styles.flexCenter)}>{currentPost.status}</div>
                             <div className={clsx(styles.content5, styles.flexCenter)}>{currentPost.date}</div>
@@ -160,7 +162,9 @@ function Task(/*{allPosts}*/) {
                 totalPosts={posts.length}
                 paginate={paginate}
             />
-        </div>
+            </div>
+            </div>
+        </>
     )
 }
 

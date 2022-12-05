@@ -115,39 +115,43 @@ function Vehicle() {
     const paginate = pageNumber  => setCurrentPage(pageNumber)
 
     return (
-        <div className={clsx(styles.wrapper)}>
-            <PageTitle name='Vehicle'/>
-            <div className={clsx(styles.boardTitle)}>
-                <div className={clsx(styles.content1, styles.flexCenter)}>ID</div>
-                <div className={clsx(styles.content2, styles.flexCenter)}>Biển số xe</div>
-                <div className={clsx(styles.content3, styles.flexCenter)}>Loại xe</div>
-                <div className={clsx(styles.content4, styles.flexCenter)}>Sức chứa</div>
-                <div className={clsx(styles.content5, styles.flexCenter)}>Trọng lượng</div>
-                <div className={clsx(styles.content6, styles.flexCenter)}>Lượng nhiên liệu</div>
-            </div>
-            <div className={clsx(styles.boardContent)}>
-                {currentPosts.map((currentPost, index) => {
-                    return (
-                        <div key={index} className={clsx(styles.flexCenter, styles.boardRow)}>
-                            <div className={clsx(styles.content1, styles.flexCenter)}>
-                                <input type='checkbox' className={clsx(styles.checkBox)}/>
-                                {currentPost.id}
+        <>
+                <PageTitle name='Vehicle'/>
+            <div className={clsx(styles.centering)}>                
+            <div className={clsx(styles.wrapper)}>
+                <div className={clsx(styles.boardTitle)}>
+                    <div className={clsx(styles.content1, styles.flexCenter)}>ID</div>
+                    <div className={clsx(styles.content2, styles.flexCenter)}>Biển số xe</div>
+                    <div className={clsx(styles.content3, styles.flexCenter)}>Loại xe</div>
+                    <div className={clsx(styles.content4, styles.flexCenter)}>Sức chứa</div>
+                    <div className={clsx(styles.content5, styles.flexCenter)}>Trọng lượng</div>
+                    <div className={clsx(styles.content6, styles.flexCenter)}>Lượng nhiên liệu</div>
+                </div>
+                <div className={clsx(styles.boardContent)}>
+                    {currentPosts.map((currentPost, index) => {
+                        return (
+                            <div key={index} className={clsx(styles.flexCenter, styles.boardRow)}>
+                                <div className={clsx(styles.content1, styles.flexCenter)}>
+                                    <input type='checkbox' className={clsx(styles.checkBox)}/>
+                                    {currentPost.id}
+                                </div>
+                                <div className={clsx(styles.content2, styles.flexCenter)}>{currentPost.title}</div>
+                                <div className={clsx(styles.content3, styles.flexCenter)}>{`${currentPost.assign}/5`}</div>
+                                <div className={clsx(styles.content4, styles.flexCenter)}>{currentPost.status}</div>
+                                <div className={clsx(styles.content5, styles.flexCenter)}>{currentPost.date}</div>
+                                <div className={clsx(styles.content6, styles.flexCenter)}>{currentPost.fuel}</div>
                             </div>
-                            <div className={clsx(styles.content2, styles.flexCenter)}>{currentPost.title}</div>
-                            <div className={clsx(styles.content3, styles.flexCenter)}>{`${currentPost.assign}/5`}</div>
-                            <div className={clsx(styles.content4, styles.flexCenter)}>{currentPost.status}</div>
-                            <div className={clsx(styles.content5, styles.flexCenter)}>{currentPost.date}</div>
-                            <div className={clsx(styles.content6, styles.flexCenter)}>{currentPost.fuel}</div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
+                <PageNumber
+                    postPerPage={postsPerPage}
+                    totalPosts={posts.length}
+                    paginate={paginate}
+                />
             </div>
-            <PageNumber
-                postPerPage={postsPerPage}
-                totalPosts={posts.length}
-                paginate={paginate}
-            />
-        </div>
+            </div>
+        </>
     )
 }
 
