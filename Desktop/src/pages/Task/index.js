@@ -211,7 +211,10 @@ function Task(/*{allPosts}*/) {
                                         className={clsx(styles.plus)} 
                                         onClick={() => handleClick(currentPost.id, 'employee')} 
                                         icon={faPlus}
-                                    /> : <></>}
+                                    /> : <FontAwesomeIcon 
+                                    className={clsx(styles.plus)} 
+                                     icon={faBatteryFull}
+                                />}
                             </div>
                             <div className={clsx(styles.content4, styles.flexCenter)}>{currentPost.status}</div>
                             <div className={clsx(styles.content5, styles.flexCenter)}>{currentPost.date}</div>

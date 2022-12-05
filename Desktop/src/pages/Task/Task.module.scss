@@ -42,7 +42,7 @@
 }
 
 .boardTitle {
-    height: calc(0.07*944px);
+    height: calc(0.05*944px);
     background-color: #D9D9D9;
     display: flex;
     align-items: center;
@@ -54,7 +54,9 @@
     width: 92.7%;
     margin: 0 50px 0 50px;
 }
-
+.boardContent {
+    height: calc(10*0.05*944px);
+}
 .flexCenter {
     display: flex;
     align-items: center;
