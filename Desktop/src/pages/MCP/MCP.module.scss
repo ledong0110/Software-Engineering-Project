@@ -1,17 +1,27 @@
+.centering {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.wrapper {
+    width: 100%
+}
 .boardTitle,
 .boardContent {
     width: 92.7%;
-    margin: 0 80px 0 20px;
+    margin: 0 50px 0 50px;
 }
 
 .boardTitle {
-    height: calc(0.07*944px);
+    height: calc(0.05*944px);
     background-color: #D9D9D9;
     display: flex;
     align-items: center;
     margin-top: calc(0.05*944px);;
 }
-
+.boardContent {
+    height: calc(10*0.05*944px);
+}
 
 .flexCenter {
     display: flex;

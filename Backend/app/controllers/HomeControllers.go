@@ -40,7 +40,7 @@ func InitializeHomeController() HomeController {
 	var homeController = HomeController{}
 
 	homeController.Home = func (c *fiber.Ctx) error {
-		return c.Redirect("/login")
+		return c.SendFile("./public/build/index.html")
 	}
 
 	homeController.InsertPage = func (c *fiber.Ctx) error {
@@ -120,7 +120,7 @@ func InitializeHomeController() HomeController {
 		}
 		
 		c.Cookie(&cookie)
-		return c.JSON(fiber.Map{"user": fiber.Map{"role": userDetail.Role, "picture": userDetail.Picture, "name": userDetail.Name}, "accessToken": AccessToken})
+		return c.JSON(fiber.Map{"user": fiber.Map{"id": userDetail.ID.Hex() ,"role": userDetail.Role, "picture": userDetail.Picture, "name": userDetail.Name}, "accessToken": AccessToken})
 	}
 
 	homeController.Logout = func (c *fiber.Ctx) error {
@@ -173,7 +173,7 @@ func InitializeHomeController() HomeController {
 
 		AccessToken, _ := utils.CreateAccessToken(userDetail)
 		
-		return c.JSON(fiber.Map{"user": fiber.Map{"role": userDetail.Role, "picture": userDetail.Picture, "name": userDetail.Name}, "accessToken": AccessToken})
+		return c.JSON(fiber.Map{"user": fiber.Map{"id": userDetail.ID.Hex() ,"role": userDetail.Role, "picture": userDetail.Picture, "name": userDetail.Name}, "accessToken": AccessToken})
 	}
 
 	homeController.Map = func(c *fiber.Ctx) error {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 import axios from '../../../api/axios';
 
 import withRouter from '../../../services/withRouter';
@@ -44,7 +44,7 @@ function Login(props) {
           withCredentials: true
         })
         
-        const accessToken = response?.data?.accessTokentoken
+        const accessToken = response?.data?.accessToken
         const expire = response?.data?.exp
         const user = response?.data?.user
         setAuth({ ...user, accessToken, expire }) 
@@ -78,7 +78,7 @@ function Login(props) {
           <input type="password" placeholder="password" name='password' onChange={e => setPassword(e.target.value)} value={password} required/>
           <button type='submit' >Sign in</button>
         </form>
-        <p>You don't have an account? <Link to="/user/insert" style={{color: 'rgba(11, 204, 148, 0.35)'}}>Register</Link></p>
+        {/* <p>You don't have an account? <Link to="/user/insert" style={{color: 'rgba(11, 204, 148, 0.35)'}}>Register</Link></p> */}
       </div>
     </div>
     

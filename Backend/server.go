@@ -42,7 +42,7 @@ func main() {
         AllowOrigins: "http://locahost:3000",
         AllowHeaders:  "Origin, Content-Type, Accept",  
     }))
-    app.Static("/", "./public")
+    app.Static("/", "./public/build")
     
     routes.Route(app)
     

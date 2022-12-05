@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faBatteryFull, faPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import PageTitle from "../../components/Layout/PageTitle";
 import PageNumber from "../../components/Layout/PageNumber";
 import styles from './Task.module.scss'
@@ -20,7 +20,7 @@ const allPosts = [
     },
     {
         id: 305,
-        title: "MCP 1,2,3 District 1",
+        title: "MCPP 1,2,3 District 1",
         assign: [],
         status: "complete",
         date: "10/09/22"
@@ -100,7 +100,7 @@ const allPosts = [
 // Take Task API by parameter allPosts
 function Task(/*{allPosts}*/) {
     // pagination
-    const [posts] = useState(allPosts)
+    const [posts, setPosts] = useState(allPosts)
     const [currentPage, setCurrentPage] = useState(1)
     const [postsPerPage] = useState(10)
 
@@ -113,12 +113,33 @@ function Task(/*{allPosts}*/) {
     const [pid, setPid] = useState(-1)
     //selected tasks to delete or edit
     const[selected, setSelected] = useState([])
+    const [search, setSearch] = useState('')
 
     const indexOfLastPost = currentPage * postsPerPage
     const indexOfFirstPost = indexOfLastPost - postsPerPage
     const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
 
     const paginate = pageNumber  => setCurrentPage(pageNumber)
+
+    const filterTask = () => {
+        return (
+            posts.filter(post => {
+                if (search.length !== 0) {
+                    return post.title.includes(search)
+                }
+                else return null
+            })
+        )
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let dt = filterTask()
+        console.log(dt)
+        if (dt.length > 0)
+            setPosts(dt)
+        
+    }
 
     const handleCheck = (MCP) => {
         if (selected.includes(MCP)) {
@@ -151,21 +172,31 @@ function Task(/*{allPosts}*/) {
     }
 
     const handleDelete = () => {}
-    console.log('selected tasks: ', selected)
 
     return (
-        <div className={clsx(styles.wrapper)}>
+        <>
             <AddModal modal={modal} setModal={setModal} />
             <EmployeeModal modal={modalEmployee} setModal={setModalEmployee} pid={pid}/>
             <EditModal modal={modalEdit} setModal={setModalEdit} pid={pid} />
             <VehicleModal modal={modalVehicle} setModal={setModalVehicle} pid={pid} />
             <PageTitle name='Task'/>
+            <div className={clsx(styles.centering)}>
+            <div className={clsx(styles.wrapper)}>
             <div className={clsx(styles.buttons)}>
                 <div className={clsx(styles.container)}>
-                    <button className={clsx(styles.button)}>Assign</button>
+                    {/* <button className={clsx(styles.button)}>Assign</button> */}
                     <button className={clsx(styles.button)} onClick={() => handleClick(selected, 'edit')}>Edit</button>
                     <button className={clsx(styles.button)} onClick={handleDelete}>Delete</button>
-                    <input className={clsx(styles.search)} placeholder='Search Tasks' spellCheck={false}/>
+                    <input 
+                        className={clsx(styles.search)} 
+                        style={{marginRight: '0'}}
+                        placeholder='Search Tasks' 
+                        spellCheck={false}
+                        onChange={e => setSearch(e.target.value)}
+                    />
+                    <button className={clsx(styles.searchButton)} onClick={handleSubmit}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass}/>
+                    </button>
                     <button 
                         className={clsx(styles.add)}
                         onClick={() => setModal(true)}
@@ -209,7 +240,10 @@ function Task(/*{allPosts}*/) {
                                         className={clsx(styles.plus)} 
                                         onClick={() => handleClick(currentPost.id, 'employee')} 
                                         icon={faPlus}
-                                    /> : <></>}
+                                    /> : <FontAwesomeIcon 
+                                    className={clsx(styles.plus)} 
+                                     icon={faBatteryFull}
+                                />}
                             </div>
                             <div className={clsx(styles.content4, styles.flexCenter)}>{currentPost.status}</div>
                             <div className={clsx(styles.content5, styles.flexCenter)}>{currentPost.date}</div>
@@ -222,7 +256,9 @@ function Task(/*{allPosts}*/) {
                 totalPosts={posts.length}
                 paginate={paginate}
             />
-        </div>
+            </div>
+            </div>
+        </>
     )
 }
 

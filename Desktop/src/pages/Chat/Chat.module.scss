@@ -14,7 +14,7 @@
 
 .chat {
     display: flex;
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     padding: 0.5rem 0.2rem 0.5rem 1.8rem;
     border: 1px solid black;
@@ -23,7 +23,7 @@
 
 .messageInput {
     border-radius: 0.5rem;
-    width: 84%;
+    width: 55vw;
     background: rgba(217, 217, 217, 0.8);
 }
 
@@ -31,6 +31,6 @@
     background: rgba(0, 204, 144, 0.8);
     border: none;
     border-radius: 0.52em;
-    width: 12%;
+    width: 10vw;
     margin-left: 0.5rem;
 }

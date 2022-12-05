@@ -25,21 +25,25 @@
 }
 
 .receiver {
-    height: 18%;
+    height: 15%;
 
     border: 1px solid #000000;
     padding-top: 1rem;
+    margin: 4
 }
 
-.container {    
+.container {  
+    padding-top: 1.5rem;  
     display: flex;
     align-items: center;
-    height: 35%;
+    height: 30%;
     padding-left: 0.6rem;
+
+    cursor: pointer;
 }
 
 .picture {
-    width: 30%;
+    width: 18%;
     border-radius: 50%;
 }
 
@@ -71,9 +75,9 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
+    padding-left: 0.8rem;
 
     display: flex;
-    justify-content: center;
     align-items: center;
 
     color: rgba(0, 0, 0, 0.5);

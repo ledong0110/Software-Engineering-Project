@@ -1,8 +1,16 @@
+.centering {
+    display: flex;
+    align-items: center;
+    
+}
+
 .wrapper {
     box-sizing: border-box;
     //width: 82%;
+    width: 100%;
     height: calc(0.14 * 944px);
-    border: 1px solid #000000;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
 }
 
 .name {
@@ -10,7 +18,7 @@
     font-style: normal;
     font-weight: 200;
     font-size: 2rem;
-    height: 75%;
+    height: 65%;
     display: flex;
     align-items: center;
     text-align: center;
@@ -20,12 +28,13 @@
 .buttons {
     display: flex;
     padding-left: 4rem;
+    
 }
 
 .defaultButton,
 .assign,
 .create{
-    width: 85px;
+    width: 100px;
     height: 30px;
     background-color: transparent;
     border: 1px groove #C4C5D0;
@@ -41,4 +50,5 @@
     position: absolute;
     right: calc(100px + 0.5rem);
     padding-top: 0.15rem;
+    
 }
