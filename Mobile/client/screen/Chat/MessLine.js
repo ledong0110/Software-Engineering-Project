@@ -30,90 +30,96 @@ function MessLine({ route }) {
 	const [userName, setUserName] = useState('');
 	const [messages, setMessages] = useState([]);
 
-	const currentUser = getAuth().currentUser;
-	const uid = currentUser.uid;
-	
-	const db = getFirestore();
-
-	const roomID = item.id > uid ? item.id + '-' + uid : uid + '-' + item.id;
-	const roomRef = doc(db, 'rooms', roomID);
-	const roomMessageRef = collection(db, 'rooms', roomID, 'messages');
-
-	const ws = useRef();
-
-	ws.current = new WebSocket('ws://127.0.0.1:3000');
 	useEffect(() => {
-		ws.current.onopen = () => {
-			console.log('Connected to the server');
-			const q = query(roomMessageRef, orderBy('createdAt', 'desc'));
-
-			const unsubscribe = onSnapshot(q, (snapshot) => {
-				setMessages(
-					snapshot.docs.map((doc) => ({
-						_id: doc.id,
-						text: doc.data().text,
-						createdAt: doc.data().createdAt.toDate(),
-						user: doc.data().user,
-					}))
-				);
-			});
-			getDoc(doc(db, 'users', uid)).then((doc) => {
-				if (doc.id === uid) {
-					setUserName(doc.data().name);
-				}
-			});
-
-			return unsubscribe;
-		};
-		ws.current.onerror = (e) => {
-			console.log(e.message);
-		};
-		ws.current.onmessage = (e) => {
-			console.log(e.data);
-		};
-		ws.current.onclose = () => {
-			console.log('Disconnected to the server')
-		}
+		setMessages(
+			item.message
+		);
 	}, []);
 
-	const currUserData = {
-		displayName: userName,
-		email: currentUser.email,
-	};
-	const userBData = {
-		displayName: userB.name,
-		email: userB.email,
-	};
-	const roomData = {
-		participants: [currUserData, userBData],
-		participantsArray: [currentUser.email, userB.email],
-	};
-	setDoc(roomRef, roomData, { merge: true });
+	// const currentUser = getAuth().currentUser;
+	// const uid = currentUser.uid;
+	
+	// const db = getFirestore();
+
+	// const roomID = item.id > uid ? item.id + '-' + uid : uid + '-' + item.id;
+	// const roomRef = doc(db, 'rooms', roomID);
+	// const roomMessageRef = collection(db, 'rooms', roomID, 'messages');
+
+	// const ws = useRef();
+
+	// ws.current = new WebSocket('ws://127.0.0.1:3000');
+	// useEffect(() => {
+	// 	ws.current.onopen = () => {
+	// 		console.log('Connected to the server');
+	// 		const q = query(roomMessageRef, orderBy('createdAt', 'desc'));
+
+	// 		const unsubscribe = onSnapshot(q, (snapshot) => {
+	// 			setMessages(
+	// 				snapshot.docs.map((doc) => ({
+	// 					_id: doc.id,
+	// 					text: doc.data().text,
+	// 					createdAt: doc.data().createdAt.toDate(),
+	// 					user: doc.data().user,
+	// 				}))
+	// 			);
+	// 		});
+	// 		getDoc(doc(db, 'users', uid)).then((doc) => {
+	// 			if (doc.id === uid) {
+	// 				setUserName(doc.data().name);
+	// 			}
+	// 		});
+
+	// 		return unsubscribe;
+	// 	};
+	// 	ws.current.onerror = (e) => {
+	// 		console.log(e.message);
+	// 	};
+	// 	ws.current.onmessage = (e) => {
+	// 		console.log(e.data);
+	// 	};
+	// 	ws.current.onclose = () => {
+	// 		console.log('Disconnected to the server')
+	// 	}
+	// }, []);
+
+	// const currUserData = {
+	// 	displayName: userName,
+	// 	email: currentUser.email,
+	// };
+	// const userBData = {
+	// 	displayName: userB.name,
+	// 	email: userB.email,
+	// };
+	// const roomData = {
+	// 	participants: [currUserData, userBData],
+	// 	participantsArray: [currentUser.email, userB.email],
+	// };
+	// setDoc(roomRef, roomData, { merge: true });
 	const onSend = useCallback((messages = []) => {
 		setMessages((previousMessages) =>
 			GiftedChat.append(previousMessages, messages)
 		);
-		if (messages) {
-			ws.current.send(JSON.stringify(messages))
-			const { _id, createdAt, text, user } = messages[0];
-			addDoc(roomMessageRef, {
-				_id,
-				createdAt,
-				text,
-				user,
-			});
-			setDoc(
-				roomRef,
-				{
-					lastMessage: {
-						_id,
-						createdAt,
-						text,
-					},
-				},
-				{ merge: true }
-			);
-		}
+		// if (messages) {
+		// 	ws.current.send(JSON.stringify(messages))
+		// 	const { _id, createdAt, text, user } = messages[0];
+		// 	addDoc(roomMessageRef, {
+		// 		_id,
+		// 		createdAt,
+		// 		text,
+		// 		user,
+		// 	});
+		// 	setDoc(
+		// 		roomRef,
+		// 		{
+		// 			lastMessage: {
+		// 				_id,
+		// 				createdAt,
+		// 				text,
+		// 			},
+		// 		},
+		// 		{ merge: true }
+		// 	);
+		// }
 	}, []);
 
 	const renderSend = (props) => {
@@ -175,8 +181,8 @@ function MessLine({ route }) {
 				messages={messages}
 				onSend={(messages) => onSend(messages)}
 				user={{
-					_id: currentUser.email,
-					avatar: 'https://placeimg.com/140/140/any',
+					_id: item.id,
+					avatar: '../../assets/avatar.png',
 				}}
 				showAvatarForEveryMessage={true}
 				alwaysShowSend

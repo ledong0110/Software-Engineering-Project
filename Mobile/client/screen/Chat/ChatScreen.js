@@ -18,28 +18,141 @@ import {
 } from 'react-native';
 import Header from '../../components/Header';
 
+
+const ContactList = [
+	{
+		id: 12345,
+		name: 'Trần Văn C',
+		pictureUrl: '../../assets/avatar.png',
+		preview: 'Hello developer',
+		time: '12:10',
+		message: [
+			{
+				_id: Math.floor(Math.random() * 100),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+			{
+				_id: Math.floor(Math.random() * 100),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+		],
+	},
+	{
+		id: 12345,
+		name: 'Lê Thị B',
+		pictureUrl: '../../assets/avatar.png',
+		preview: 'Hello developer',
+		time: '9:10',
+		message: [
+			{
+				_id: Math.floor(Math.random() * 100),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+			{
+				_id: Math.floor(Math.random() * 100),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+		],
+	},
+	{
+		id: 12345,
+		name: 'Thông báo MCP',
+		pictureUrl: '../../assets/avatar.png',
+		preview: 'Hello developer',
+		time: '7:43',
+		message: [
+			{
+				_id: Math.floor(Math.random() * 100),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+			{
+				_id: Math.floor(Math.random() * 100),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+		],
+	},
+	{
+		id: 12345,
+		name: 'Nguyễn Văn A',
+		pictureUrl: '../../assets/avatar.png',
+		preview: 'Hello developer',
+		time: '5:23',
+		message: [
+			{
+				_id: Math.floor(Math.random() * 100),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+			{
+				_id: Math.floor(Math.random() * 100),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+		],
+	},
+];
+
 const Item = ({ item }) => {
-	const [lastText, setLastText] = useState('');
-	const [lastTime, setLastTime] = useState('');
+	// const [lastText, setLastText] = useState('');
+	// const [lastTime, setLastTime] = useState('');
 
-	const uid = getAuth().currentUser.uid;
+	// const uid = getAuth().currentUser.uid;
+	// useEffect(() => {
+	// 	const roomID =
+	// 		item.id > uid ? item.id + '-' + uid : uid + '-' + item.id;
+	// 	const roomRef = doc(getFirestore(), 'rooms', roomID);
+	// 	getDoc(roomRef).then((doc) => {
+	// 		if (doc.exists()) {
+	// 			setLastText(doc.data().lastMessage.text);
+	// 			setLastTime(doc.data().lastMessage.createdAt.seconds);
+	// 		}
+	// 	});
+	// }, []);
+
 	const navigation = useNavigation();
-	useEffect(() => {
-		const roomID =
-			item.id > uid ? item.id + '-' + uid : uid + '-' + item.id;
-		const roomRef = doc(getFirestore(), 'rooms', roomID);
-		getDoc(roomRef).then((doc) => {
-			if (doc.exists()) {
-				setLastText(doc.data().lastMessage.text);
-				setLastTime(doc.data().lastMessage.createdAt.seconds);
-			}
-		});
-	}, []);
 
-	const date = new Date(lastTime * 1000);
-	var hours = date.getHours();
-	var minutes = '0' + date.getMinutes();
-	const time = hours + ':' + minutes.slice(-2);
+	// const date = new Date(time * 1000);
+	// var hours = date.getHours();
+	// var minutes = '0' + date.getMinutes();
+	// const time = hours + ':' + minutes.slice(-2);
 	return (
 		<Pressable
 			style={styles.contact}
@@ -55,9 +168,9 @@ const Item = ({ item }) => {
 			/>
 			<View style={styles.container}>
 				<Text style={styles.user}>{item.name}</Text>
-				<Text style={styles.text}>{lastText}</Text>
+				<Text style={styles.text}>{item.preview}</Text>
 			</View>
-			<Text style={styles.time}>{time}</Text>
+			<Text style={styles.time}>{item.time}</Text>
 		</Pressable>
 	);
 };
@@ -65,36 +178,36 @@ const Item = ({ item }) => {
 function ChatScreen(props) {
 	const [contact, setContact] = useState([]);
 	const navigation = useNavigation();
-	const auth = getAuth();
-	const db = getFirestore();
-	useEffect(() => {
-		onAuthStateChanged(auth, (user) => {
-			if (user) {
-				const uid = user.uid;
-				getDocs(collection(db, 'users')).then((querySnapshot) => {
-					const tempContact = [];
-					querySnapshot.forEach((doc) => {
-						if (doc.exists()) {
-							if (doc.id != uid) {
-								tempContact.push({
-									id: doc.id,
-									name: doc.data().name,
-									email: doc.data().email,
-								});
-							}
-						}
-					});
-					setContact(tempContact);
-				});
-			}
-		});
-	}, []);
+	// const auth = getAuth();
+	// const db = getFirestore();
+	// useEffect(() => {
+	// 	onAuthStateChanged(auth, (user) => {
+	// 		if (user) {
+	// 			const uid = user.uid;
+	// 			getDocs(collection(db, 'users')).then((querySnapshot) => {
+	// 				const tempContact = [];
+	// 				querySnapshot.forEach((doc) => {
+	// 					if (doc.exists()) {
+	// 						if (doc.id != uid) {
+	// 							tempContact.push({
+	// 								id: doc.id,
+	// 								name: doc.data().name,
+	// 								email: doc.data().email,
+	// 							});
+	// 						}
+	// 					}
+	// 				});
+	// 				setContact(tempContact);
+	// 			});
+	// 		}
+	// 	});
+	// }, []);
 	return (
 		<>
 			<Header name='Trò chuyện' />
 			<FlatList
 				style={styles.list}
-				data={contact}
+				data={ContactList}
 				keyExtractor={(item) => item.email}
 				renderItem={({ item }) => <Item item={item} />}
 			/>
