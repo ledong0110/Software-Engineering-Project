@@ -38,7 +38,8 @@
     align-items: center;
     height: 30%;
     padding-left: 0.6rem;
-    
+
+    cursor: pointer;
 }
 
 .picture {
@@ -74,9 +75,9 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
+    padding-left: 0.8rem;
 
     display: flex;
-    justify-content: center;
     align-items: center;
 
     color: rgba(0, 0, 0, 0.5);

@@ -2,25 +2,29 @@ import styles from './Add.module.scss'
 import clsx from 'clsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
-// import Button from '@mui/material/Button';
-// import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import MCPModal from '../MCP/MCP';
 import { useState } from 'react';
 
 function AddModal({modal, setModal}) {
     const [modalMCP, setModalMCP] = useState(false)
-    const [modalVehicle, setModalVehicle] = useState(false)
-
+    const [title, setTitle] = useState('')
+    const [type, setType] = useState('Collector')
+    const [number, setNumber] = useState(0)
     const [MCP, setMCP] = useState([])
-    const [vehicle, setVehicle] = useState([])
+    const [descrip, setDescrip] = useState('')
 
-    console.log(MCP, vehicle)
+    console.log(MCP)
 
     const handleClose = () => {
         setModal(false)
@@ -35,44 +39,64 @@ function AddModal({modal, setModal}) {
                 <Box
                     noValidate
                     component="form"
-                    sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    m: 'auto',
-                    width: '450px',
-                    }}
+                    sx={{  width: 500, margin: 0}}
                 >
-                    <div className={clsx(styles.modalContent)}>
-                        <div className={clsx(styles.modalEle)}>Tiêu đề<input type='text'/></div>
-                        <div className={clsx(styles.flexCenter)} style={{justifyContent: 'space-between'}}>
-                            <div className={clsx(styles.modalEle)} style={{width: '150%', paddingRight: '10%', backgroundColor: 'white'}}>
-                                Loại
-                                <input type='button'/>
-                                <FontAwesomeIcon icon={faSort} className={clsx(styles.icon)}/>
-                            </div>
-                            <div className={clsx(styles.modalEle)} style={{width: '150%', paddingLeft: '10%'}}>
-                                Số người tối đa  
-                                <input type='button'/>
-                            </div>
-                        </div>
-                        <div className={clsx(styles.flexCenter)} style={{justifyContent: 'space-between'}}>
-                            <div className={clsx(styles.modalEle)} style={{width: '150%'}}>
-                                MCPs
-                                <input 
-                                    // value={MCP}
-                                    type='button' 
-                                    onClick={() => setModalMCP(true)}/>
-                                <FontAwesomeIcon icon={faSort} className={clsx(styles.icon)}/>
-                            </div>
-                        </div>
-                        <div className={clsx(styles.modalEle)}>
-                            Mô tả (không bắt buộc)
-                            <input type='text' style={{height: '8rem'}}/>
-                        </div>
-                        <div className={clsx(styles.modalButton)}>
-                            <button onClick={() => setModal(false)}>Đóng</button>
-                            <button>Tạo</button>
-                        </div>
+                    <Stack className={clsx(styles.flexCenter)} style={{marginTop: '2rem'}}>
+                        <TextField 
+                            style={{minWidth: '430px'}} 
+                            id="outlined-basic" 
+                            label="Tiêu đề" 
+                            variant="outlined" 
+                            onChange= {e => setTitle(e.target.value)}
+                            defaultValue={title}
+                        />
+                    </Stack>
+                    <Stack spacing={4} direction="row" className={clsx(styles.flexCenter)} style={{marginTop: '2rem'}}>
+                        <FormControl sx={{ width: 120, minHeight: 32, borderColor: 'common.black' }} >
+                            <InputLabel id="demo-select-small">Loại</InputLabel>
+                            <Select
+                                labelId="demo-select-small"
+                                id="demo-select-small"
+                                value={type}
+                                label="Type"
+                                defaultValue={type}
+                                onChange={e => setType(e.target.value)}
+                            >
+
+                                <MenuItem value={'Collector'}>Collector</MenuItem>
+                                <MenuItem value={'Janitor'}>Janitor</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl sx={{ width: 120, minHeight: 32, borderColor: 'grey.300' }} size="small">
+                            <TextField
+                                type="number"
+                                label="Số người tối đa"
+                                defaultValue={number}
+                                onChange={e => setNumber(e.target.value)}
+                            />
+                        </FormControl>
+                        <Button 
+                            sx={{ width: 120, minHeight: 32, borderColor: 'common.black', color:'common.black' }} 
+                            variant="outlined"
+                            size="large"
+                            onClick={() => setModalMCP(true)}
+                        >
+                            MCPs
+                        </Button>
+                    </Stack>
+                    <Stack className={clsx(styles.flexCenter)} style={{marginTop: '2rem'}}>
+                        <TextField 
+                            style={{minWidth: '430px'}} 
+                            id="outlined-basic" 
+                            label="Mô tả" 
+                            variant="outlined" 
+                            onChange= {e => setDescrip(e.target.value)}
+                            defaultValue={descrip}
+                        />
+                    </Stack>
+                    <div className={clsx(styles.modalButton)}>
+                        <button onClick={() => setModal(false)}>Đóng</button>
+                        <button>Tạo</button>
                     </div>
                 </Box>
             </DialogContent>
