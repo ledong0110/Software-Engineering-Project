@@ -2,6 +2,7 @@ package controllers
 
 import (
 	// "log"
+	"log"
 	_ "log"
 
 	// model "chat_module/app/models"
@@ -34,7 +35,8 @@ func InitializeOfficerController() OfficerController {
 
 	officerController.ChatInterface = func(c *fiber.Ctx) error {
 		// return c.Render("chat-test", fiber.Map{})
-		sess, _ := store.Store.Get(c)
+		log.Println("Access Message App")
+		id := c.Query("id")
 		type userPrint struct{
 			Id string `json:"id"`
 			Name string `json:"name"`
@@ -53,16 +55,15 @@ func InitializeOfficerController() OfficerController {
 		optMess := options.Find()
 		optMess.SetSort(bson.D{{"$natural", -1}})
 		optMess.SetLimit(1)
-		idCurrUser, _ := primitive.ObjectIDFromHex(sess.Get("id").(string))
+		idCurrUser, _ := primitive.ObjectIDFromHex(id)
 		users, _ := User.Find(bson.M{"_id": bson.M{"$ne": idCurrUser}}, opt)
-		currUser, _ := User.FindOne(bson.M{"_id": idCurrUser})
 		for _, user := range users {
 			filter := bson.M{
 				"$or": []bson.M{
 					{
 						"$and": []bson.M{
 							{
-								"toUserID": sess.Get("id").(string),
+								"toUserID": id,
 							},
 							{
 								"fromUserID": user.ID.Hex(),
@@ -75,7 +76,7 @@ func InitializeOfficerController() OfficerController {
 								"toUserID": user.ID.Hex(),
 							},
 							{
-								"fromUserID": sess.Get("id").(string),
+								"fromUserID": id,
 							},
 						},
 					},
@@ -90,7 +91,7 @@ func InitializeOfficerController() OfficerController {
 				userAndMessage = append(userAndMessage, Combine{userPrint{user.ID.Hex(), user.Name, user.Picture, user.Online}, ""})
 			}
 		}
-		return c.Render("messenger/chat", fiber.Map{"currUser": userPrint{currUser.ID.Hex(), currUser.Name, currUser.Picture, currUser.Online},"user_and_message": userAndMessage})
+		return c.JSON(fiber.Map{"user_list": userAndMessage})
 	}
 
 	return officerController

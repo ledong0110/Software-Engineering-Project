@@ -16,15 +16,15 @@ func Route(app *fiber.App) {
 	}))
 	MessageRouter(message)
 
-	backofficer := app.Group("/backofficer", middleware.IsBackOfficer)
+	backofficer := app.Group("/backofficer")
 	backofficer.Use(jwtware.New(jwtware.Config{
-		SigningKey: []byte("se221"),
+		SigningKey: []byte(os.Getenv("ACCESS_TOKEN_SECRET")),
 	}))
 	BackofficerRouter(backofficer)
 
 	employee := app.Group("/employee", middleware.IsEmployee)
 	employee.Use(jwtware.New(jwtware.Config{
-		SigningKey: []byte("se221"),
+		SigningKey: []byte(os.Getenv("ACCESS_TOKEN_SECRET")),
 	}))
 	EmployeeRouter(employee)
 
