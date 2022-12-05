@@ -11,19 +11,19 @@ function ChangeInfo({ route }) {
 	const { value, change } = route.params;
 	const onPressHandler = () => {
 		navigation.navigate('AccountInfo');
-		if (change == 'Name') {
-			updateDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
-				name: info,
-			});
-		} else if (change == 'Phone') {
-			updateDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
-				phone: info,
-			});
-		} else if (change == 'Email') {
-			updateDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
-				email: info,
-			});
-		}
+		// if (change == 'Name') {
+		// 	updateDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
+		// 		name: info,
+		// 	});
+		// } else if (change == 'Phone') {
+		// 	updateDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
+		// 		phone: info,
+		// 	});
+		// } else if (change == 'Email') {
+		// 	updateDoc(doc(getFirestore(), 'users', getAuth().currentUser.uid), {
+		// 		email: info,
+		// 	});
+		// }
 	};
 	const [info, setInfo] = useState({ value });
 	return (
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 	inputText: {
 		flexDirection: 'column',
 		backgroundColor: '#fff',
-		height: 72,
+		height: 75,
 		marginTop: 40,
 		paddingLeft: 16,
 		borderRadius: 20,
@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
 	input: {
 		flexGrow: 2,
 		textAlignVertical: 'center',
-		fontSize: 15,
+		fontSize: 18,
+		paddingBottom: 5,
 	},
 	text: {
 		flexGrow: 2,

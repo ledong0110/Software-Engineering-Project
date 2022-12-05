@@ -57,6 +57,11 @@ function MessageSidebar({setSelectedUser}) {
             setUsers(dt)
         
     }
+
+    const handleClick = (user) => {
+        setSelectedUser(user)
+        setFocus(user.id)
+    }
     
 
     return (  
@@ -67,7 +72,11 @@ function MessageSidebar({setSelectedUser}) {
             </div>
             { users?.length
                 ? users.map((preview, index) => (
-                        <div key={index} className={clsx(styles.receiver)} onClick={() => setSelectedUser(preview.user)}>
+                        <div
+                            style={{background: (preview.user.id===focus) && 'rgba(0, 204, 144, 0.25)'}} 
+                            key={index} 
+                            className={clsx(styles.receiver)} 
+                            onClick={() => handleClick(preview.user)}>
                             <div className={clsx(styles.container)}>
                                 <img className={clsx(styles.picture)} src={preview.user.picture} alt="janitor"/>
                                 <div>
