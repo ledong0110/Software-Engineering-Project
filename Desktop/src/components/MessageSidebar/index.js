@@ -6,7 +6,7 @@ import { useLocation, useNavigate} from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 
-function MessageSidebar({setSelected}) {
+function MessageSidebar({setSelectedUser}) {
     const [users, setUsers] = useState()
     const [focus, setFocus] = useState()
     const { auth } = useAuth()
@@ -57,11 +57,7 @@ function MessageSidebar({setSelected}) {
             setUsers(dt)
         
     }
-
-    const handleClick = (id) => {
-        setFocus(id)
-        setSelected(id)
-    }
+    
 
     return (  
         <div className={clsx(styles.sidebar)}>
