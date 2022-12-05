@@ -6,8 +6,9 @@ import { useLocation, useNavigate} from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 
-function MessageSidebar({previews, setSelectedUser}) {
+function MessageSidebar({setSelected}) {
     const [users, setUsers] = useState()
+    const [focus, setFocus] = useState()
     const { auth } = useAuth()
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate()
@@ -38,11 +39,35 @@ function MessageSidebar({previews, setSelectedUser}) {
         }
     }, [])
 
+    const filterUser = (name) => {
+        return (
+            users.filter(user => {
+                if (name.length !== 0) {
+                    return user.user.name.includes(name)
+                }
+                else return null
+            })
+        )
+    }
+
+    const handleChange = (e) => {
+        // e.preventDefault()
+        let dt = filterUser(e.target.value)
+        if (dt.length > 0)
+            setUsers(dt)
+        
+    }
+
+    const handleClick = (id) => {
+        setFocus(id)
+        setSelected(id)
+    }
+
     return (  
         <div className={clsx(styles.sidebar)}>
             <div className={clsx(styles.header)}>
                 <div className={clsx(styles.name)}>Trò chuyện</div>
-                <input style={{width: '90%'}} placeholder='Tìm kiếm' spellCheck={false}/>
+                <input style={{width: '90%'}} placeholder='Tìm kiếm' spellCheck={false} onChange={handleChange}/>
             </div>
             { users?.length
                 ? users.map((preview, index) => (

@@ -4,45 +4,72 @@ import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import Header from '../../components/Header';
-import InputBar from './InputBar';
-import LoginButton from './LoginButton';
+import InputBar from '../../components/InputBar';
+import LoginButton from '../../components/LoginButton';
 
 function Signup(props) {
 	const [name, setName] = useState('');
-	const [phone, setPhone] = useState('');
-	const [email, setEmail] = useState('');
+	const [pictureUrl, setPictureUrl] = useState('');
+	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [confirm_password, setConfirmPassword] = useState('');
+	const [role, setRole] = useState('');
 
 	const navigation = useNavigation();
 	const onPressHandler = () => {
-		let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-		if (reg.test(email) === false) {
-			Alert.alert('Invalid email');
-		}
-		if (password.length <= 6) {
+		// let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+		// if (reg.test(email) === false) {
+		// 	Alert.alert('Invalid email');
+		// }
+		// if (password.length <= 6) {
+		// 	Alert.alert('The password should be more than 6 letters');
+		// } else if (password !== confirm_password) {
+		// 	Alert.alert('The confirm password is not correct');
+		// } else {
+		// 	createUserWithEmailAndPassword(getAuth(), email, password)
+		// 		.then((userCredential) => {
+		// 			setDoc(
+		// 				doc(getFirestore(), 'users', userCredential.user.uid),
+		// 				{
+		// 					username: name,
+		// 					email: email,
+		// 					phone: phone,
+		// 					password: password,
+		// 				}
+		// 			);
+		// 		})
+		// 		.then(() => {
+		// 			navigation.navigate('Login');
+		// 		})
+		// 		.catch((error) => {
+		// 			const errorCode = error.code;
+		// 			const errorMessage = error.message;
+		// 		});
+		// }
+		if (password.length < 6) {
 			Alert.alert('The password should be more than 6 letters');
-		} else if (password !== confirm_password) {
-			Alert.alert('The confirm password is not correct');
 		} else {
-			createUserWithEmailAndPassword(getAuth(), email, password)
-				.then((userCredential) => {
-					setDoc(
-						doc(getFirestore(), 'users', userCredential.user.uid),
-						{
-							name: name,
-							email: email,
-							phone: phone,
-							password: password,
-						}
-					);
-				})
-				.then(() => {
-					navigation.navigate('Login');
+			var InsertAPIUrl = '/user/login';
+			var headers = {
+				'Content-type': 'application/json',
+			};
+			var data = {
+				name: name,
+				pictureUrl: pictureUrl,
+				username: username,
+				password: password,
+				role: role,
+			};
+			fetch(InsertAPIUrl, {
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify(data),
+			})
+				.then((response) => response.json())
+				.then((response) => {
+					alert(response[0].Message);
 				})
 				.catch((error) => {
-					const errorCode = error.code;
-					const errorMessage = error.message;
+					alert(error);
 				});
 		}
 	};
@@ -55,15 +82,14 @@ function Signup(props) {
 				onChangeText={(name) => setName(name)}
 			/>
 			<InputBar
-				placeholder='Phone'
-				value={phone}
-				onChangeText={(phone) => setPhone(phone)}
+				placeholder='Picture'
+				value={pictureUrl}
+				onChangeText={(pictureUrl) => setPictureUrl(pictureUrl)}
 			/>
 			<InputBar
-				value={email}
-				onChangeText={(email) => setEmail(email)}
-				placeholder='Email'
-				secureTextEntry={false}
+				value={username}
+				onChangeText={(username) => setUsername(username)}
+				placeholder='Username'
 			/>
 			<InputBar
 				value={password}
@@ -72,12 +98,9 @@ function Signup(props) {
 				secureTextEntry={true}
 			/>
 			<InputBar
-				value={confirm_password}
-				onChangeText={(confirm_password) =>
-					setConfirmPassword(confirm_password)
-				}
-				placeholder='Confirm Password'
-				secureTextEntry={true}
+				value={role}
+				onChangeText={(role) => setRole(role)}
+				placeholder='Role'
 			/>
 			<LoginButton
 				name='Sign up'

@@ -2,7 +2,10 @@
     height: calc(0.27*944px);
     display: flex;
     align-items: center;
-    padding-left: 65vw;
+    justify-content: flex-end;
+    // flex-direction: row-reverse;
+    padding-right: 5%;
+    // right: 10%;
 }
 
 .firstMount {

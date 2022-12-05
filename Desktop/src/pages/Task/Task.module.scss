@@ -104,3 +104,22 @@
 .content5 {
     width: 11.8%;
 }
+
+.searchButton {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    border-radius: 50%;
+    
+    // color: rgb(177, 175, 175);
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(236, 229, 229, 0.692);
+    }
+
+    &:active {
+        background-color: rgba(236, 229, 229, 0.219);
+    }
+    
+}

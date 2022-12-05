@@ -16,11 +16,12 @@ function LoginButton(props) {
 const styles = StyleSheet.create({
 	button: {
 		width: '100%',
-		height: 40,
+		height: 50,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginVertical: 10,
 		paddingHorizontal: 10,
+		paddingVertical: 5,
 		borderRadius: 20,
 	},
 	text: {

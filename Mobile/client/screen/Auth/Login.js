@@ -12,49 +12,107 @@ import {
 	TextInput,
 } from 'react-native';
 import Header from '../../components/Header';
-import InputBar from './InputBar';
-import LoginButton from './LoginButton';
+import InputBar from '../../components/InputBar';
+import LoginButton from '../../components/LoginButton';
 import {
 	getAuth,
 	onAuthStateChanged,
 	signInWithEmailAndPassword,
 } from 'firebase/auth';
+import useAuth from '../../hooks/useAuth';
 
-function Login() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState();
+const LOGIN_URL = '/login';
+
+function Login(props) {
+	// const [email, setEmail] = useState('');
+	// const [password, setPassword] = useState();
+	// const navigation = useNavigation();
+
+	// const onPressHandler = () => {
+	// 	navigation.navigate('Signup');
+	// };
+
+	// useEffect(() => {
+	// 	const auth = getAuth();
+
+	// 	const unsubscribe = onAuthStateChanged(auth, (user) => {
+	// 		if (user) {
+	// 			navigation.navigate('MainTab');
+	// 		} else {
+	// 			return unsubscribe;
+	// 		}
+	// 	});
+	// }, []);
+
+	// const onPressLogin = () => {
+	// 	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+	// 		Alert.alert('Invalid email');
+	// 	} else if (password.length <= 6) {
+	// 		Alert.alert('The password should be more than 6 letters');
+	// 	} else {
+	// 		signInWithEmailAndPassword(getAuth(), email, password)
+	// 			.then((userCredential) => {
+	// 				const user = userCredential.user;
+	// 				navigation.navigate('MainTab');
+	// 			})
+	// 			.catch((error) => {
+	// 				Alert.alert('The username or password is not correct');
+	// 			});
+	// 	}
+	// };
+
+	const { auth, setAuth } = useAuth();
+
 	const navigation = useNavigation();
+	const location = 'MainTab';
 
-	const onPressHandler = () => {
-		navigation.navigate('Signup');
-	};
+	const [errMsg, setErrMsg] = useState('');
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [state, setState] = useState(false);
 
 	useEffect(() => {
-		const auth = getAuth();
-		
-		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			if (user) {
-				navigation.navigate('MainTab');
-			} else {
-				return unsubscribe;
-			}
-		});
-	}, []);
+		if (auth?.accessToken) navigation.navigate(location);
+	});
 
-	const onPressLogin = () => {
-		if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-			Alert.alert('Invalid email');
-		} else if (password.length <= 6) {
-			Alert.alert('The password should be more than 6 letters');
-		} else {
-			signInWithEmailAndPassword(getAuth(), email, password)
-				.then((userCredential) => {
-					const user = userCredential.user;
-					navigation.navigate('MainTab');
-				})
-				.catch((error) => {
-					Alert.alert('The username or password is not correct');
-				});
+	useEffect(() => {
+		setErrMsg('');
+	}, [username, password]);
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		try {
+			const response = await axios.post(
+				LOGIN_URL,
+				JSON.stringify({ username, password }),
+				{
+					headers: { 'Content-Type': 'application/json' },
+					withCredentials: true,
+				}
+			);
+
+			const accessToken = response?.data?.accessToken;
+			const expire = response?.data?.exp;
+			const user = response?.data?.user;
+			setAuth({ ...user, accessToken, expire });
+			console.log(auth);
+			setUsername('');
+			setPassword('');
+			navigation.navigate(location);
+		} catch (err) {
+			if (!err?.response) {
+				setErrMsg('No Server Response');
+			} else if (err.reponse?.status === 400) {
+				setErrMsg('Missing Username or Password');
+			} else if (err.response?.status === 401) {
+				setErrMsg('Unauthorized');
+			} else if (err.response?.status === 403) {
+				setErrMsg('Your username or password is Wrong');
+			} else {
+				setErrMsg('Login failed');
+			}
+			setState(true);
 		}
 	};
 
@@ -62,9 +120,9 @@ function Login() {
 		<View style={styles.body}>
 			<Header name='Login' />
 			<InputBar
-				placeholder='Email'
-				value={email}
-				onChangeText={(email) => setEmail(email)}
+				placeholder='Username'
+				value={username}
+				onChangeText={(username) => setUsername(username)}
 			/>
 			<InputBar
 				placeholder='Password'
@@ -75,18 +133,16 @@ function Login() {
 			<LoginButton
 				name='Login'
 				type='PRIMARY'
-				onPress={onPressLogin}
+				onPress={handleSubmit}
 			/>
-			<LoginButton
-				name='Forgot Password?'
-				type='SECONDARY'
-			/>
+			{state && <Text style={{ color: 'red' }}>{errMsg}</Text>}
 			<Text style={styles.text}>
 				Don't have an account?
 				<Text
-					onPress={onPressHandler}
+					onPress={() => navigation.navigate('Signup')}
 					style={styles.signup}>
-					Sign up
+					{' '}
+					Signup{' '}
 				</Text>
 			</Text>
 		</View>
@@ -100,6 +156,7 @@ const styles = StyleSheet.create({
 	text: {
 		marginTop: 70,
 		fontSize: 14,
+		paddingVertical: 15,
 		textAlignVertical: 'center',
 	},
 	signup: {
