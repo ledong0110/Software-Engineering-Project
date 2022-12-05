@@ -46,7 +46,7 @@ function MessageSidebar({previews, setSelectedUser}) {
             </div>
             { users?.length
                 ? users.map((preview, index) => (
-                        <div key={index} className={clsx(styles.receiver)} onClick={setSelectedUser(preview)}>
+                        <div key={index} className={clsx(styles.receiver)} onClick={() => setSelectedUser(preview.user)}>
                             <div className={clsx(styles.container)}>
                                 <img className={clsx(styles.picture)} src={preview.user.picture} alt="janitor"/>
                                 <div>

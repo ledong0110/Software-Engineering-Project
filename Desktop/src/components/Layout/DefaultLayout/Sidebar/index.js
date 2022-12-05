@@ -11,7 +11,7 @@ import {
     faDumpster,
     faMessage,
     faRightFromBracket,
-    faEllipsisVertical
+    faAngleDoubleRight
   } from "@fortawesome/free-solid-svg-icons";
 
 function Sidebar() {
@@ -42,7 +42,7 @@ function Sidebar() {
         <aside className={clsx(styles.sidebar, isOpen ? styles.sidebar_open : "")} >
             <div className={clsx(styles.inner)}>
                 <div className={clsx(styles.page)} onClick={handleTrigger}>
-                    <FontAwesomeIcon icon={isOpen ? faTimes : faEllipsisVertical} />
+                    <FontAwesomeIcon icon={isOpen ? faTimes : faAngleDoubleRight} />
                 </div>
                 <div 
                     style={{

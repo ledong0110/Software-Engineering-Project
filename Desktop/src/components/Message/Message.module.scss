@@ -29,3 +29,41 @@
     background: rgba(8, 167, 120, 1);
 }
 
+.chat {
+    position: fixed;
+    bottom: 0px;
+    padding: 0.5rem 0.2rem 0.5rem 1.8rem;
+    border: 1px solid black;
+    width: 70%;
+    overflow: hidden;
+    background-color: white;
+}
+
+.messageInput {
+    border-radius: 0.5rem;
+    width: 84%;
+    background: rgba(217, 217, 217, 0.8);
+}
+
+.submit {
+    background: rgba(0, 204, 144, 0.8);
+    border: none;
+    border-radius: 0.52em;
+    width: 12%;
+    margin-left: 0.5rem;
+}
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    & .message_control {
+        height: 800px;
+        overflow-y: scroll;
+    }
+}
+
+textarea {
+    resize: none;
+  }
+
