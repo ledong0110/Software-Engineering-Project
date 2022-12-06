@@ -48,16 +48,17 @@ function Signup(props) {
 		if (password.length < 6) {
 			Alert.alert('The password should be more than 6 letters');
 		} else {
-			var InsertAPIUrl = '/user/login';
+			var InsertAPIUrl = 'http://192.168.1.118:3000';
 			var headers = {
+				Accept: 'application/json, text/plain, */*',
 				'Content-type': 'application/json',
 			};
 			var data = {
-				name: name,
-				pictureUrl: pictureUrl,
-				username: username,
-				password: password,
-				role: role,
+				Name: name,
+				Picture: pictureUrl,
+				Username: username,
+				Password: password,
+				Role: role,
 			};
 			fetch(InsertAPIUrl, {
 				method: 'POST',

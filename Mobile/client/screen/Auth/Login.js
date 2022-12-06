@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
-
 import {
 	Alert,
 	Pressable,
@@ -20,8 +19,10 @@ import {
 	signInWithEmailAndPassword,
 } from 'firebase/auth';
 import useAuth from '../../hooks/useAuth';
+import axios from '../../api/axios';
+import { NetworkInfo } from 'react-native-network-info';
 
-const LOGIN_URL = '/login';
+const LOGIN_URL = 'http://192.168.1.118:19000';
 
 function Login(props) {
 	// const [email, setEmail] = useState('');
@@ -84,7 +85,7 @@ function Login(props) {
 
 		try {
 			const response = await axios.post(
-				LOGIN_URL,
+				'/login',
 				JSON.stringify({ username, password }),
 				{
 					headers: { 'Content-Type': 'application/json' },
@@ -99,8 +100,8 @@ function Login(props) {
 			console.log(auth);
 			setUsername('');
 			setPassword('');
-			navigation.navigate(location);
 		} catch (err) {
+			console.log(err);
 			if (!err?.response) {
 				setErrMsg('No Server Response');
 			} else if (err.reponse?.status === 400) {

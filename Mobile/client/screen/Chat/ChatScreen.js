@@ -15,6 +15,7 @@ import {
 	StyleSheet,
 	Text,
 	View,
+	TextInput,
 } from 'react-native';
 import Header from '../../components/Header';
 import ContactList from '../../data/ContactList';
@@ -66,7 +67,22 @@ const Item = ({ item }) => {
 
 function ChatScreen(props) {
 	const [contact, setContact] = useState([]);
+	const [users, setUsers] = useState(ContactList);
 	const navigation = useNavigation();
+
+	const filterUser = (name) => {
+		return ContactList.filter((user) => {
+			if (name.length !== 0) {
+				return user.name.includes(name);
+			} else setUsers(ContactList);
+		});
+	};
+
+	const handleChange = (e) => {
+		let dt = filterUser(e);
+		if (dt.length > 0) setUsers(dt);
+		else return null
+	};
 	// const auth = getAuth();
 	// const db = getFirestore();
 	// useEffect(() => {
@@ -94,10 +110,17 @@ function ChatScreen(props) {
 	return (
 		<>
 			<Header name='Trò chuyện' />
+			<View style={styles.inputContainer}>
+				<TextInput
+					style={styles.input}
+					placeholder='Tìm kiếm'
+					onChangeText={handleChange}
+				/>
+			</View>
 			<FlatList
 				style={styles.list}
-				data={ContactList}
-				keyExtractor={(item) => item.email}
+				data={users}
+				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => <Item item={item} />}
 			/>
 		</>
@@ -108,7 +131,19 @@ const styles = StyleSheet.create({
 	list: {
 		width: '100%',
 		height: 600,
-		marginTop: 30,
+	},
+	inputContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 100,
+	},
+	input: {
+		width: '75%',
+		height: 50,
+		backgroundColor: '#fff',
+		borderRadius: 20,
+		borderWidth: 1,
+		paddingLeft: 10,
 	},
 	contact: {
 		width: '100%',

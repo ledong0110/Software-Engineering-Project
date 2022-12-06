@@ -9,7 +9,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: '11:11',
+				createdAt: new Date(),
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -18,7 +18,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: '11:11',
+				createdAt: new Date(),
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -36,7 +36,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: '11:11',
+				createdAt: new Date(),
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -45,7 +45,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: '11:11',
+				createdAt: new Date(),
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -63,7 +63,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: '11:11',
+				createdAt: new Date(),
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -72,7 +72,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: '11:11',
+				createdAt: new Date(),
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -90,7 +90,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: '11:11',
+				createdAt: new Date(),
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',
@@ -99,7 +99,7 @@ const ContactList = [
 			{
 				_id: Math.floor(Math.random() * 100),
 				text: 'Hello developer',
-				createdAt: '11:11',
+				createdAt: new Date(),
 				user: {
 					_id: 2,
 					avatar: 'https://placeimg.com/140/140/any',

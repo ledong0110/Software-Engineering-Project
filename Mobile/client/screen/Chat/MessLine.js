@@ -18,9 +18,11 @@ import React, {
 	useState,
 	useRef,
 } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View, Alert } from 'react-native';
 import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const CHAT_SERVER_ENDPOINT = 'localhost:3000';
 
 function MessLine({ route }) {
 	const { item } = route.params;
@@ -30,21 +32,24 @@ function MessLine({ route }) {
 	const [userName, setUserName] = useState('');
 	const [messages, setMessages] = useState([]);
 	const ws = useRef();
-	ws.current = new WebSocket('http://192.168.1.118:3000');
+	// ws.current = new WebSocket(
+	// 	'wss://' + CHAT_SERVER_ENDPOINT + '/chat-app/ws/register'
+	// );
+	ws.current = new WebSocket('http://192.168.1.118:3000')
 
 	useEffect(() => {
+		setMessages(item.message);
 		ws.current.open = () => {
 			console.log('Connected to the server');
-			setMessages(item.message);
 		};
 		ws.current.onerror = (e) => {
-			console.log(e.message);
+			Alert.alert(e.message);
 		};
 		ws.current.onmessage = (e) => {
 			console.log(e.data);
 		};
 		ws.current.onclose = () => {
-			console.log('Disconnected to the server');
+			Alert.alert('Disconnected to the server');
 		};
 	}, []);
 
