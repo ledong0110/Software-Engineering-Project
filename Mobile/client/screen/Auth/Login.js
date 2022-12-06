@@ -82,39 +82,39 @@ function Login(props) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		navigation.navigate('MainTab')
+		// try {
+		// 	const response = await axios.post(
+		// 		LOGIN_URL,
+		// 		JSON.stringify({ username, password }),
+		// 		{
+		// 			headers: { 'Content-Type': 'application/json' },
+		// 			withCredentials: true,
+		// 		}
+		// 	);
 
-		try {
-			const response = await axios.post(
-				LOGIN_URL,
-				JSON.stringify({ username, password }),
-				{
-					headers: { 'Content-Type': 'application/json' },
-					withCredentials: true,
-				}
-			);
-
-			const accessToken = response?.data?.accessToken;
-			const expire = response?.data?.exp;
-			const user = response?.data?.user;
-			setAuth({ ...user, accessToken, expire });
-			console.log(auth);
-			setUsername('');
-			setPassword('');
-		} catch (err) {
-			console.log(err);
-			if (!err?.response) {
-				setErrMsg('No Server Response');
-			} else if (err.reponse?.status === 400) {
-				setErrMsg('Missing Username or Password');
-			} else if (err.response?.status === 401) {
-				setErrMsg('Unauthorized');
-			} else if (err.response?.status === 403) {
-				setErrMsg('Your username or password is Wrong');
-			} else {
-				setErrMsg('Login failed');
-			}
-			setState(true);
-		}
+		// 	const accessToken = response?.data?.accessToken;
+		// 	const expire = response?.data?.exp;
+		// 	const user = response?.data?.user;
+		// 	setAuth({ ...user, accessToken, expire });
+		// 	console.log(auth);
+		// 	setUsername('');
+		// 	setPassword('');
+		// } catch (err) {
+		// 	console.log(err);
+		// 	if (!err?.response) {
+		// 		setErrMsg('No Server Response');
+		// 	} else if (err.reponse?.status === 400) {
+		// 		setErrMsg('Missing Username or Password');
+		// 	} else if (err.response?.status === 401) {
+		// 		setErrMsg('Unauthorized');
+		// 	} else if (err.response?.status === 403) {
+		// 		setErrMsg('Your username or password is Wrong');
+		// 	} else {
+		// 		setErrMsg('Login failed');
+		// 	}
+		// 	setState(true);
+		// }
 	};
 
 	return (

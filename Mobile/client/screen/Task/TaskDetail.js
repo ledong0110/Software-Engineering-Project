@@ -14,7 +14,7 @@ import MCP_data from '../../data/MCP';
 function TaskDetail({ route }) {
 	const { ID, checkin, checkout, MCP } = route.params;
 	const navigation = useNavigation();
-	
+
 	const ASPECT_RATIO = styles.map.width / styles.map.height;
 	const LATITUDE_DELTA = 0.02;
 	const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -68,14 +68,16 @@ function TaskDetail({ route }) {
 			<View style={styles.buttonContainer}>
 				<Pressable
 					onPress={() => {
-						const date = new Date()
-						const hour = date.getHours()
-						console.log(hour);
+						navigation.goBack();
 					}}
 					style={styles.button}>
 					<Text>Check in</Text>
 				</Pressable>
-				<Pressable style={[styles.button, styles.checkout]}>
+				<Pressable
+					style={[styles.button, styles.checkout]}
+					onPress={() => {
+						navigation.goBack();
+					}}>
 					<Text>Check out</Text>
 				</Pressable>
 			</View>
