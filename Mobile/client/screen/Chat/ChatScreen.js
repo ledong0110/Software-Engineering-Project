@@ -65,6 +65,8 @@ const Item = ({ item }) => {
 	);
 };
 
+const CONTACT_URL = ''
+
 function ChatScreen(props) {
 	const [contact, setContact] = useState([]);
 	const [users, setUsers] = useState(ContactList);
@@ -78,10 +80,16 @@ function ChatScreen(props) {
 		});
 	};
 
+	// const getContactList = async () => {
+	// 	const response = await fetch(CONTACT_URL);
+	// 	const json = await response.json();
+	// 	setTaskList(json.user.ContactList)
+	// };
+
 	const handleChange = (e) => {
 		let dt = filterUser(e);
 		if (dt.length > 0) setUsers(dt);
-		else return null
+		else return null;
 	};
 	// const auth = getAuth();
 	// const db = getFirestore();

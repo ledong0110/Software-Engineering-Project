@@ -22,7 +22,7 @@ import useAuth from '../../hooks/useAuth';
 import axios from '../../api/axios';
 import { NetworkInfo } from 'react-native-network-info';
 
-const LOGIN_URL = 'http://192.168.1.118:19000';
+const LOGIN_URL = 'http://10.128.82.4:3000';
 
 function Login(props) {
 	// const [email, setEmail] = useState('');
@@ -85,7 +85,7 @@ function Login(props) {
 
 		try {
 			const response = await axios.post(
-				'/login',
+				LOGIN_URL,
 				JSON.stringify({ username, password }),
 				{
 					headers: { 'Content-Type': 'application/json' },

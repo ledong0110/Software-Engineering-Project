@@ -35,7 +35,7 @@ function MessLine({ route }) {
 	// ws.current = new WebSocket(
 	// 	'wss://' + CHAT_SERVER_ENDPOINT + '/chat-app/ws/register'
 	// );
-	ws.current = new WebSocket('http://192.168.1.118:3000')
+	ws.current = new WebSocket('http://10.128.82.4:3000');
 
 	useEffect(() => {
 		setMessages(item.message);
