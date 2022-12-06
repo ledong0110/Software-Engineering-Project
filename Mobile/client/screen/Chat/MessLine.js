@@ -41,6 +41,11 @@ function MessLine({ route }) {
 		setMessages(item.message);
 		ws.current.open = () => {
 			console.log('Connected to the server');
+			// const getMessages = async () => {
+			// 	const response = await fetch(MESSAGE_URL);
+			// 	const json = await response.json();
+			// 	setTaskList(json.user.TaskList)
+			// };
 		};
 		ws.current.onerror = (e) => {
 			Alert.alert(e.message);

@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 const Stack = createStackNavigator();
 
-
+const TASK_URL = ''
 
 const Item = ({ title }) => {
 	const navigation = useNavigation();
@@ -27,6 +27,12 @@ const Item = ({ title }) => {
 			MCP: title.MCP,
 		});
 	};
+
+	// const getTaskList = async () => {
+	// 	const response = await fetch(TASK_URL);
+	// 	const json = await response.json();
+	// 	setTaskList(json.user.TaskList)
+	// };
 
 	return (
 		<Pressable onPress={onPressHandler}>
