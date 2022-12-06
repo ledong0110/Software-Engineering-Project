@@ -58,7 +58,7 @@ const getInitiateConversationUI = (selectedUser) =>{
   if (selectedUser !== null) {
     return (
       <div className={clsx(styles.inner)}>
-          <h1>You haven 't chatted with {selectedUser.name} in a while,
+          <h1>Bắt đầu nhắn với {selectedUser.name},
           <span className="sub-heading"> Say Hi.</span></h1>
       </div>
     )
@@ -108,7 +108,10 @@ export default function Message({ selectedUser}) {
         selectedUser !== null &&
         selectedUser.id === messagePayload.fromUserID
       ) {
-        updateConversation([...conversation, messagePayload]);
+        if (conversation?.length > 0)
+          updateConversation([...conversation, messagePayload]);
+        else
+          updateConversation([messagePayload]);
         scrollMessageContainer(messageContainer);
       }
     };
@@ -138,7 +141,10 @@ export default function Message({ selectedUser}) {
         };
         console.log(messagePayload)
         sendWebSocketMessage(messagePayload);
-        updateConversation([...conversation, messagePayload]);
+        if (conversation?.length > 0)
+          updateConversation([...conversation, messagePayload]);
+        else
+          updateConversation([messagePayload]);
         scrollMessageContainer(messageContainer);
       }
     
@@ -160,8 +166,12 @@ export default function Message({ selectedUser}) {
     <div  className={clsx(styles.container)}>
     {conversation?.length > 0
                   ? getMessageUI(messageContainer, auth, selectedUser, conversation) 
-                  : getInitiateConversationUI(selectedUser)
+                  : <div className={clsx(styles.inner)}>
+                    <h1>Bắt đầu nhắn với {selectedUser.name},
+                    <span className="sub-heading"> Say Hi.</span></h1>
+                  </div>
     }
+    
       <div className={clsx(styles.chat)}>
           <form onSubmit={sendMessage}>
           <textarea 

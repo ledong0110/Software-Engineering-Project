@@ -5,7 +5,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 60 },
@@ -43,6 +45,39 @@ const columns = [
 function VehicleModal({modal, setModal, setData}) {
     // selected inclueds id of all selected vehicles
     const [selected, setSelected] = useState([])
+    const [vehicle, setVehicle] = useState([])
+    const axiosPrivate = useAxiosPrivate()
+    const navigate = useNavigate()
+    const location = useLocation()
+    
+  //   useEffect(() => {
+  //     let isMounted = true
+  //     const controller = new AbortController()
+
+  //     const getAllVehicle = async () => {
+  //         try {
+  //             const response = await axiosPrivate.post(`/task/get-all-vehicle`, 
+  //             {
+  //                 signal: controller.signal
+  //             })
+  //             console.log(response.data)
+  //             isMounted && setVehicle(response.data)
+            
+  //             // isMounted && setUsers(response.data.user_list)
+  //         } catch (err) {
+  //             console.log(err)
+  //             navigate('/', { state: { from: location }, replace: true})
+  //         }
+  //     }
+  //     if (!vehicle?.length) 
+  //         getAllVehicle()
+
+  //     return () => {
+          
+  //         isMounted = false
+  //         controller.abort()
+  //     }
+  // }, [modal])
 
     const handleClose = () => {
       setModal(false)
