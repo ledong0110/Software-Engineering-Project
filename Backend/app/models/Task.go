@@ -19,7 +19,7 @@ type TaskStruct struct {
 	MCP			[]int 	`json:"MCP" bson:"MCP"`
 	Description string `json:"description" bson:"description"`
 	Worker		[]primitive.ObjectID `json:"worker" bson:"worker"`
-	Vehicle 	int			`json:"vehicle" bson:"vehicle"`
+	Vehicle 	[]int			`json:"vehicle" bson:"vehicle"`
 	State		int 		`json:"state" bson:"state" default: 0`
 }
 

@@ -13,6 +13,9 @@ func TaskRouter(task fiber.Router) {
 	task.Post("/get-one-task", taskController.GetOneTask)
 	task.Post("/get-all-task", taskController.GetAllTask)
 	task.Post("/get-all-mcp", taskController.GetAllMCP)
+	task.Post("/get-employee", taskController.GetEmployee)
+	task.Post("/get-all-vehicle", taskController.GetAllVehicle)
+	task.Post("/add-employee", taskController.AddEmployee)
 	// task.Get("/mcps")
 	// task.Get("/vehicles")
 }
