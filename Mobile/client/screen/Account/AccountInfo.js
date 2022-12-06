@@ -28,15 +28,24 @@ import UserInfo from '../../data/UserInfo';
 // 	},
 // };
 
+const PROFILE_URL = ''
+
 export default function AccountInfo() {
 	const navigation = useNavigation();
-	console.log('Hello');
 	const [name, setName] = useState(UserInfo.name);
 	const [email, setEmail] = useState(UserInfo.email);
 	const [phone, setPhone] = useState(UserInfo.phone);
 	const onPressBack = () => {
 		navigation.goBack();
 	};
+
+	// const getInfo = async () => {
+	// 	const response = await fetch(PROFILE_URL);
+	// 	const json = await response.json();
+	// 	setName(json.user.Name)
+	// 	setEmail(json.user.Email);
+	// 	setPhone(json.user.Phone);
+	// };
 
 	// useEffect(() => {
 	// 	const auth = getAuth();
@@ -58,6 +67,7 @@ export default function AccountInfo() {
 	// 		}
 	// 	});
 	// }, []);
+	
 	return (
 		<View style={styles.body}>
 			<Header name='Tài khoản của tôi' />
