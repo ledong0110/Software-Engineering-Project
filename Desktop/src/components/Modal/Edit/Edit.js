@@ -78,7 +78,7 @@ function EditModal({modal, setModal, pid}) {
             const response = await axiosPrivate.post(`/task/edit-task`, 
                 JSON.stringify(task),
             )
-            alert("Đã thêm task mới thành công")
+            alert("Đã cập nhật task thành công")
             setTitle("")
             setNumber(0)
             setMCP([])

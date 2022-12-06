@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect,  useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBatteryFull, faPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import PageTitle from "../../components/Layout/PageTitle";
@@ -9,98 +9,100 @@ import AddModal from "../../components/Modal/Add/Add";
 import EmployeeModal from "../../components/Modal/Employee/Employee";
 import EditModal from "../../components/Modal/Edit/Edit";
 import VehicleModal from "../../components/Modal/Vehicle/Vehicle";
-
-const allPosts = [
-    {
-        id: 1,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 305,
-        title: "MCPP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 306,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 307,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 308,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 309,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 310,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 311,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 312,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 313,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 314,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    },
-    {
-        id: 315,
-        title: "MCP 1,2,3 District 1",
-        assign: [],
-        status: "complete",
-        date: "10/09/22"
-    }
-]
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useLocation, useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+// const allPosts = [
+//     {
+//         id: 1,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 305,
+//         title: "MCPP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 306,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 307,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 308,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 309,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 310,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 311,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 312,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 313,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 314,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     },
+//     {
+//         id: 315,
+//         title: "MCP 1,2,3 District 1",
+//         assign: [],
+//         status: "complete",
+//         date: "10/09/22"
+//     }
+// ]
 
 // Take Task API by parameter allPosts
 function Task(/*{allPosts}*/) {
     // pagination
-    const [posts, setPosts] = useState(allPosts)
+    const [posts, setPosts] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [postsPerPage] = useState(10)
 
@@ -108,18 +110,54 @@ function Task(/*{allPosts}*/) {
     const [modalEmployee, setModalEmployee] = useState(false)
     const [modalEdit, setModalEdit] = useState(false)
     const [modalVehicle, setModalVehicle] = useState(false)
-    
+    const [worker, setWorker] = useState([])
     //post id to send to Employee modal
     const [pid, setPid] = useState(-1)
+    
     //selected tasks to delete or edit
+    const[taskType, setTaskType] = useState("")
     const[selected, setSelected] = useState([])
     const [search, setSearch] = useState('')
+    const axiosPrivate = useAxiosPrivate()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [number, setNumber] = useState()
 
     const indexOfLastPost = currentPage * postsPerPage
     const indexOfFirstPost = indexOfLastPost - postsPerPage
     const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
 
     const paginate = pageNumber  => setCurrentPage(pageNumber)
+
+    
+    useEffect(() => {
+            let isMounted = true
+            const controller = new AbortController()
+      
+            const getAllTask = async () => {
+                try {
+                    const response = await axiosPrivate.post(`/task/get-all-task`, 
+                    {
+                        signal: controller.signal
+                    })
+                    console.log(response.data)
+                    isMounted && setPosts(response.data)
+                  
+                    // isMounted && setUsers(response.data.user_list)
+                } catch (err) {
+                    console.log(err)
+                    navigate('/', { state: { from: location }, replace: true})
+                }
+            }
+            if (!posts?.length) 
+                getAllTask()
+      
+            return () => {
+                
+                isMounted = false
+                controller.abort()
+            }
+        }, [])
 
     const filterTask = () => {
         return (
@@ -149,14 +187,16 @@ function Task(/*{allPosts}*/) {
             let newSelected = [...selected]
             newSelected.splice(index, 1)
             setSelected(newSelected)
+            
           }
         }
         else {
           setSelected([...selected, MCP])
+          
         }
       }
 
-    const handleClick = (pid, type) => {
+    const handleClick = (pid, type, task_type="", number=0, worker=[]) => {
         if (type === 'edit') {
             if (selected.length !== 1) alert('must choose 1 task')
             else {
@@ -166,17 +206,22 @@ function Task(/*{allPosts}*/) {
         }
         else {
             setPid(pid)
+            setNumber(number)
+            setTaskType(task_type)
+            setWorker(worker)
             if (type === 'employee') setModalEmployee(true)
             else setModalVehicle(true)
         }
     }
 
-    const handleDelete = () => {}
+    const handleDelete = () => {
+
+    }
 
     return (
         <>
             <AddModal modal={modal} setModal={setModal} />
-            <EmployeeModal modal={modalEmployee} setModal={setModalEmployee} pid={pid}/>
+            <EmployeeModal modal={modalEmployee} setModal={setModalEmployee} pid={pid} taskType={taskType} Number={number} worker={worker}/>
             <EditModal modal={modalEdit} setModal={setModalEdit} pid={pid} />
             <VehicleModal modal={modalVehicle} setModal={setModalVehicle} pid={pid} />
             <PageTitle name='Task'/>
@@ -214,7 +259,7 @@ function Task(/*{allPosts}*/) {
                 <div className={clsx(styles.content5, styles.flexCenter)}>Date</div>
             </div>
             <div className={clsx(styles.boardContent)}>
-                {currentPosts.map((currentPost) => {
+                {posts && currentPosts.map((currentPost) => {
                     return (
                         <div key={currentPost.id} className={clsx(styles.flexCenter, styles.boardRow)}>
                             <div className={clsx(styles.content1, styles.flexCenter)}>
@@ -234,19 +279,19 @@ function Task(/*{allPosts}*/) {
                                 />
                             </div>
                             <div className={clsx(styles.content3, styles.flexCenter)}>
-                                {`${currentPost.assign.length}/5`}
-                                {(currentPost.assign.length !== 5)? 
+                                {(currentPost.worker ? currentPost.worker?.length : 0 )+"/" + currentPost.number}
+                                {(currentPost.worker?.length !== 5)? 
                                     <FontAwesomeIcon 
                                         className={clsx(styles.plus)} 
-                                        onClick={() => handleClick(currentPost.id, 'employee')} 
+                                        onClick={() => handleClick(currentPost.id,'employee', currentPost.type, currentPost.number, currentPost.worker)} 
                                         icon={faPlus}
                                     /> : <FontAwesomeIcon 
                                     className={clsx(styles.plus)} 
                                      icon={faBatteryFull}
                                 />}
                             </div>
-                            <div className={clsx(styles.content4, styles.flexCenter)}>{currentPost.status}</div>
-                            <div className={clsx(styles.content5, styles.flexCenter)}>{currentPost.date}</div>
+                            <div className={clsx(styles.content4, styles.flexCenter)}>{currentPost.state}</div>
+                            <div className={clsx(styles.content5, styles.flexCenter)}>{dayjs(currentPost.time).format("DD/MM/YYYY")}</div>
                         </div>
                     )
                 })}
