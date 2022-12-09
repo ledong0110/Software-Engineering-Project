@@ -1,67 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../firebaseConfig';
 import {
-	Alert,
-	Pressable,
 	StyleSheet,
 	Text,
-	View,
-	TextInput,
+	View
 } from 'react-native';
 import Header from '../../components/Header';
 import InputBar from '../../components/InputBar';
 import LoginButton from '../../components/LoginButton';
-import {
-	getAuth,
-	onAuthStateChanged,
-	signInWithEmailAndPassword,
-} from 'firebase/auth';
 import useAuth from '../../hooks/useAuth';
-import axios from '../../api/axios';
-import { NetworkInfo } from 'react-native-network-info';
 
-const LOGIN_URL = 'http://10.128.82.4:3000';
+const LOGIN_URL = 'http://127.0.0.1:3000';
 
 function Login(props) {
-	// const [email, setEmail] = useState('');
-	// const [password, setPassword] = useState();
-	// const navigation = useNavigation();
-
-	// const onPressHandler = () => {
-	// 	navigation.navigate('Signup');
-	// };
-
-	// useEffect(() => {
-	// 	const auth = getAuth();
-
-	// 	const unsubscribe = onAuthStateChanged(auth, (user) => {
-	// 		if (user) {
-	// 			navigation.navigate('MainTab');
-	// 		} else {
-	// 			return unsubscribe;
-	// 		}
-	// 	});
-	// }, []);
-
-	// const onPressLogin = () => {
-	// 	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-	// 		Alert.alert('Invalid email');
-	// 	} else if (password.length <= 6) {
-	// 		Alert.alert('The password should be more than 6 letters');
-	// 	} else {
-	// 		signInWithEmailAndPassword(getAuth(), email, password)
-	// 			.then((userCredential) => {
-	// 				const user = userCredential.user;
-	// 				navigation.navigate('MainTab');
-	// 			})
-	// 			.catch((error) => {
-	// 				Alert.alert('The username or password is not correct');
-	// 			});
-	// 	}
-	// };
-
 	const { auth, setAuth } = useAuth();
 
 	const navigation = useNavigation();
@@ -82,7 +33,13 @@ function Login(props) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		navigation.navigate('MainTab')
+		if (password.length < 6) {
+			Alert.alert('Mật khẩu phải nhiều hơn 6 ký tự. Vui lòng thử lại');
+		} else if (username.length == 0) {
+			Alert.alert('Tên người dùng bị bỏ trống. Vui lòng thử lại');
+		} else {
+			navigation.navigate('MainTab');
+		}
 		// try {
 		// 	const response = await axios.post(
 		// 		LOGIN_URL,
@@ -119,31 +76,31 @@ function Login(props) {
 
 	return (
 		<View style={styles.body}>
-			<Header name='Login' />
+			<Header name='Đăng nhập' />
 			<InputBar
-				placeholder='Username'
+				placeholder='Tên người dùng'
 				value={username}
 				onChangeText={(username) => setUsername(username)}
 			/>
 			<InputBar
-				placeholder='Password'
+				placeholder='Mật khẩu'
 				value={password}
 				onChangeText={(password) => setPassword(password)}
 				secureTextEntry={true}
 			/>
 			<LoginButton
-				name='Login'
+				name='Đăng nhập'
 				type='PRIMARY'
 				onPress={handleSubmit}
 			/>
 			{state && <Text style={{ color: 'red' }}>{errMsg}</Text>}
 			<Text style={styles.text}>
-				Don't have an account?
+				Không có tài khoản?
 				<Text
 					onPress={() => navigation.navigate('Signup')}
 					style={styles.signup}>
 					{' '}
-					Signup{' '}
+					Đăng ký{' '}
 				</Text>
 			</Text>
 		</View>

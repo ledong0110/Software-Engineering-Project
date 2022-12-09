@@ -1,30 +1,10 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getDoc, getFirestore, doc } from 'firebase/firestore';
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Calendar, CalendarList } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
 import Header from '../components/Header';
-import UserTask from '../data/UserTask'
+import UserTask from '../data/UserTask';
 
 function HomeScreen() {
-	// const [task, setTask] = useState([]);
-	// const auth = getAuth();
-	
-	// onAuthStateChanged(auth, (user) => {
-	// 	if (user) {
-			
-	// 		user.getIdToken().then(function (idToken) {
-	// 		});
-	// 		const uid = user.uid;
-	// 		const db = getFirestore();
-	// 		getDoc(doc(db, 'users', uid)).then((docSnap) => {
-	// 			if (docSnap.exists()) {
-	// 				setTask(docSnap.data().Task);
-	// 			}
-	// 		});
-	// 	}
-	// });
-
 	let Dates = [];
 	let markedDays = {};
 	for (let obj in UserTask) {
@@ -37,12 +17,11 @@ function HomeScreen() {
 		};
 	});
 
-	
 	return (
 		<>
 			<Header name='Trang chủ' />
 			<View style={styles.body}>
-				<Text style={styles.text}>Work Calendar</Text>
+				<Text style={styles.text}>Lịch làm việc</Text>
 				<View style={styles.imageContain}>
 					<Calendar
 						enableSwipeMonths={true}
@@ -91,7 +70,8 @@ const styles = StyleSheet.create({
 	text: {
 		flexGrow: 1,
 		fontSize: 24,
-		margin: 10,
+		marginTop: 10,
+		textAlign: 'center',
 	},
 	text1: {
 		flexGrow: 1,

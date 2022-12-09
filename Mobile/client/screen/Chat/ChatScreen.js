@@ -1,48 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import {
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	getFirestore,
-} from 'firebase/firestore';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	FlatList,
 	Image,
 	Pressable,
 	StyleSheet,
-	Text,
-	View,
-	TextInput,
+	Text, TextInput, View
 } from 'react-native';
 import Header from '../../components/Header';
 import ContactList from '../../data/ContactList';
 
 const Item = ({ item }) => {
-	// const [lastText, setLastText] = useState('');
-	// const [lastTime, setLastTime] = useState('');
-
-	// const uid = getAuth().currentUser.uid;
-	// useEffect(() => {
-	// 	const roomID =
-	// 		item.id > uid ? item.id + '-' + uid : uid + '-' + item.id;
-	// 	const roomRef = doc(getFirestore(), 'rooms', roomID);
-	// 	getDoc(roomRef).then((doc) => {
-	// 		if (doc.exists()) {
-	// 			setLastText(doc.data().lastMessage.text);
-	// 			setLastTime(doc.data().lastMessage.createdAt.seconds);
-	// 		}
-	// 	});
-	// }, []);
-
 	const navigation = useNavigation();
 
-	// const date = new Date(time * 1000);
-	// var hours = date.getHours();
-	// var minutes = '0' + date.getMinutes();
-	// const time = hours + ':' + minutes.slice(-2);
 	return (
 		<Pressable
 			style={styles.contact}
@@ -65,7 +35,7 @@ const Item = ({ item }) => {
 	);
 };
 
-const CONTACT_URL = ''
+const CONTACT_URL = '';
 
 function ChatScreen(props) {
 	const [contact, setContact] = useState([]);
@@ -80,41 +50,12 @@ function ChatScreen(props) {
 		});
 	};
 
-	// const getContactList = async () => {
-	// 	const response = await fetch(CONTACT_URL);
-	// 	const json = await response.json();
-	// 	setTaskList(json.user.ContactList)
-	// };
-
 	const handleChange = (e) => {
 		let dt = filterUser(e);
 		if (dt.length > 0) setUsers(dt);
 		else return null;
 	};
-	// const auth = getAuth();
-	// const db = getFirestore();
-	// useEffect(() => {
-	// 	onAuthStateChanged(auth, (user) => {
-	// 		if (user) {
-	// 			const uid = user.uid;
-	// 			getDocs(collection(db, 'users')).then((querySnapshot) => {
-	// 				const tempContact = [];
-	// 				querySnapshot.forEach((doc) => {
-	// 					if (doc.exists()) {
-	// 						if (doc.id != uid) {
-	// 							tempContact.push({
-	// 								id: doc.id,
-	// 								name: doc.data().name,
-	// 								email: doc.data().email,
-	// 							});
-	// 						}
-	// 					}
-	// 				});
-	// 				setContact(tempContact);
-	// 			});
-	// 		}
-	// 	});
-	// }, []);
+
 	return (
 		<>
 			<Header name='Trò chuyện' />

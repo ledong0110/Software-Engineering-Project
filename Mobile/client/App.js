@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
 	getFocusedRouteNameFromRoute,
-	NavigationContainer
+	NavigationContainer,
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
@@ -147,7 +147,9 @@ function MainTab() {
 
 function AuthStack() {
 	return (
-		<Stack.Navigator screenOptions={{ headerShown: false }}>
+		<Stack.Navigator
+			screenOptions={{ headerShown: false }}
+			initialRouteName='Login'>
 			<Stack.Screen
 				name='MainTab'
 				component={MainTab}

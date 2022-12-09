@@ -1,46 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
-import { getAuth } from 'firebase/auth';
-import {
-	addDoc,
-	collection,
-	getFirestore,
-	onSnapshot,
-	orderBy,
-	query,
-	doc,
-	setDoc,
-	getDoc,
-} from 'firebase/firestore';
 import React, {
 	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useState,
-	useRef,
+	useEffect, useRef, useState
 } from 'react';
-import { Image, Pressable, StyleSheet, Text, View, Alert } from 'react-native';
+import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-const CHAT_SERVER_ENDPOINT = 'localhost:3000';
 
 function MessLine({ route }) {
 	const { item } = route.params;
 	const userB = item;
 	const navigation = useNavigation();
-
 	const [userName, setUserName] = useState('');
 	const [messages, setMessages] = useState([]);
 	const ws = useRef();
-	// ws.current = new WebSocket(
-	// 	'wss://' + CHAT_SERVER_ENDPOINT + '/chat-app/ws/register'
-	// );
-	ws.current = new WebSocket('http://10.128.82.4:3000');
+	ws.current = new WebSocket('http://127.0.0.1:3000');
 
 	useEffect(() => {
 		setMessages(item.message);
 		ws.current.open = () => {
-			console.log('Connected to the server');
+			console.log('Kết nối với server');
 			// const getMessages = async () => {
 			// 	const response = await fetch(MESSAGE_URL);
 			// 	const json = await response.json();
@@ -54,69 +33,10 @@ function MessLine({ route }) {
 			console.log(e.data);
 		};
 		ws.current.onclose = () => {
-			Alert.alert('Disconnected to the server');
+			Alert.alert('Mất kết nối với máy chủ');
 		};
 	}, []);
 
-	// const currentUser = getAuth().currentUser;
-	// const uid = currentUser.uid;
-
-	// const db = getFirestore();
-
-	// const roomID = item.id > uid ? item.id + '-' + uid : uid + '-' + item.id;
-	// const roomRef = doc(db, 'rooms', roomID);
-	// const roomMessageRef = collection(db, 'rooms', roomID, 'messages');
-
-	// const ws = useRef();
-
-	// ws.current = new WebSocket('ws://127.0.0.1:3000');
-	// useEffect(() => {
-	// 	ws.current.onopen = () => {
-	// 		console.log('Connected to the server');
-	// 		const q = query(roomMessageRef, orderBy('createdAt', 'desc'));
-
-	// 		const unsubscribe = onSnapshot(q, (snapshot) => {
-	// 			setMessages(
-	// 				snapshot.docs.map((doc) => ({
-	// 					_id: doc.id,
-	// 					text: doc.data().text,
-	// 					createdAt: doc.data().createdAt.toDate(),
-	// 					user: doc.data().user,
-	// 				}))
-	// 			);
-	// 		});
-	// 		getDoc(doc(db, 'users', uid)).then((doc) => {
-	// 			if (doc.id === uid) {
-	// 				setUserName(doc.data().name);
-	// 			}
-	// 		});
-
-	// 		return unsubscribe;
-	// 	};
-	// 	ws.current.onerror = (e) => {
-	// 		console.log(e.message);
-	// 	};
-	// 	ws.current.onmessage = (e) => {
-	// 		console.log(e.data);
-	// 	};
-	// 	ws.current.onclose = () => {
-	// 		console.log('Disconnected to the server')
-	// 	}
-	// }, []);
-
-	// const currUserData = {
-	// 	displayName: userName,
-	// 	email: currentUser.email,
-	// };
-	// const userBData = {
-	// 	displayName: userB.name,
-	// 	email: userB.email,
-	// };
-	// const roomData = {
-	// 	participants: [currUserData, userBData],
-	// 	participantsArray: [currentUser.email, userB.email],
-	// };
-	// setDoc(roomRef, roomData, { merge: true });
 	const onSend = useCallback((messages = []) => {
 		setMessages((previousMessages) =>
 			GiftedChat.append(previousMessages, messages)
@@ -125,25 +45,6 @@ function MessLine({ route }) {
 			console.log(messages)
 			ws.current.send(JSON.stringify(messages));
 		}
-		// 	const { _id, createdAt, text, user } = messages[0];
-		// 	addDoc(roomMessageRef, {
-		// 		_id,
-		// 		createdAt,
-		// 		text,
-		// 		user,
-		// 	});
-		// 	setDoc(
-		// 		roomRef,
-		// 		{
-		// 			lastMessage: {
-		// 				_id,
-		// 				createdAt,
-		// 				text,
-		// 			},
-		// 		},
-		// 		{ merge: true }
-		// 	);
-		// }
 	}, []);
 
 	const renderSend = (props) => {
